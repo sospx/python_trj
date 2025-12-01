@@ -71,6 +71,23 @@ def init_db():
             )
         ''')
 
+    # Таблица откликов на объявления
+    cursor.execute('''
+            CREATE TABLE IF NOT EXISTS responses (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                from_user_id INTEGER NOT NULL,
+                to_user_id INTEGER NOT NULL,
+                offer_id INTEGER,
+                offer_type TEXT NOT NULL, -- 'donor', 'fund', 'needy'
+                message TEXT NOT NULL,
+                status TEXT DEFAULT 'new',
+                from_user_name TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (from_user_id) REFERENCES users (id),
+                FOREIGN KEY (to_user_id) REFERENCES users (id)
+            )
+        ''')
+
     conn.commit()
     conn.close()
 
