@@ -21,6 +21,22 @@ def init_db():
         )
     ''')
 
+    # Таблица объявлений благотворителей
+    cursor.execute('''
+            CREATE TABLE IF NOT EXISTS donor_offers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT NOT NULL,
+                category TEXT NOT NULL,
+                help_type TEXT NOT NULL,
+                status TEXT DEFAULT 'active',
+                contact_info TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id)
+            )
+        ''')
+
     conn.commit()
     conn.close()
 
