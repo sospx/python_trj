@@ -130,9 +130,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-    conn.commit()
-    conn.close()
-
 
 def get_db_connection():
     conn = sqlite3.connect('charity.db')
