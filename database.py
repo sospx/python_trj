@@ -40,7 +40,7 @@ def init_db():
 
     # Таблица программ фондов
     cursor.execute('''
-             CREATE TABLE IF NOT EXISTS fund_programs (
+            CREATE TABLE IF NOT EXISTS fund_programs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
                 title TEXT NOT NULL,
@@ -88,6 +88,16 @@ def init_db():
                 FOREIGN KEY (to_user_id) REFERENCES users (id)
             )
         ''')
+
+    # добавляем новые колонки, если их еще нет
+    try:
+        cursor.execute('ALTER TABLE responses ADD COLUMN from_user_contact TEXT')
+    except:
+        pass
+    try:
+        cursor.execute('ALTER TABLE responses ADD COLUMN from_user_name TEXT')
+    except:
+        pass
 
     conn.commit()
     conn.close()
