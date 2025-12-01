@@ -40,7 +40,7 @@ def init_db():
 
     # Таблица программ фондов
     cursor.execute('''
-             TABLE IF NOT EXISTS fund_programs (
+             CREATE TABLE IF NOT EXISTS fund_programs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
                 title TEXT NOT NULL,
