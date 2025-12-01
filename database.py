@@ -38,6 +38,23 @@ def init_db():
             )
         ''')
 
+    # Таблица программ фондов
+    cursor.execute('''
+             TABLE IF NOT EXISTS fund_programs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT NOT NULL,
+                category TEXT NOT NULL,
+                target_amount DECIMAL(10,2),
+                current_amount DECIMAL(10,2) DEFAULT 0,
+                status TEXT DEFAULT 'active',
+                contact_info TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id)
+            )
+        ''')
+
     conn.commit()
     conn.close()
 
