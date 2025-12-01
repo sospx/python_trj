@@ -30,6 +30,7 @@ def init_db():
                 description TEXT NOT NULL,
                 category TEXT NOT NULL,
                 help_type TEXT NOT NULL,
+                amount DECIMAL(10,2),
                 status TEXT DEFAULT 'active',
                 contact_info TEXT,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
