@@ -99,6 +99,37 @@ def init_db():
     except:
         pass
 
+    # Таблица пожертвований в фонды
+    cursor.execute('''
+           CREATE TABLE IF NOT EXISTS donations (
+               id INTEGER PRIMARY KEY AUTOINCREMENT,
+               donor_id INTEGER NOT NULL,
+               fund_id INTEGER NOT NULL,
+               program_id INTEGER NOT NULL,
+               amount DECIMAL(10,2) NOT NULL,
+               message TEXT,
+               status TEXT DEFAULT 'pending',
+               donor_contact TEXT,
+               donor_name TEXT,
+               created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+               FOREIGN KEY (donor_id) REFERENCES users (id),
+               FOREIGN KEY (fund_id) REFERENCES users (id),
+               FOREIGN KEY (program_id) REFERENCES fund_programs (id)
+           )
+       ''')
+
+    try:
+        cursor.execute('ALTER TABLE donations ADD COLUMN donor_contact TEXT')
+    except:
+        pass
+    try:
+        cursor.execute('ALTER TABLE donations ADD COLUMN donor_name TEXT')
+    except:
+        pass
+
+    conn.commit()
+    conn.close()
+
     conn.commit()
     conn.close()
 
