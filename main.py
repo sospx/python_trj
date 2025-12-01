@@ -1,6 +1,7 @@
 from flask import Flask
 from config import Config
 from routes.main import main_bp
+from auth import auth_bp
 
 
 def create_app():
@@ -10,6 +11,7 @@ def create_app():
 
     # Регистрация Blueprint
     app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp)
     return app
 
 
