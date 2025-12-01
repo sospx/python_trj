@@ -81,6 +81,7 @@ def init_db():
                 offer_type TEXT NOT NULL, -- 'donor', 'fund', 'needy'
                 message TEXT NOT NULL,
                 status TEXT DEFAULT 'new',
+                from_user_contact TEXT,
                 from_user_name TEXT,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (from_user_id) REFERENCES users (id),
