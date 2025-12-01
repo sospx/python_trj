@@ -4,3 +4,5 @@ from database import get_db_connection
 from utils import hash_password
 
 auth_bp = Blueprint('auth', __name__)
+
+#сюда добавить декораторы и логику авторизаци и!!!!!!!!
