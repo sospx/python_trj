@@ -55,6 +55,22 @@ def init_db():
             )
         ''')
 
+    # Таблица заявок нуждающихся
+    cursor.execute('''
+            CREATE TABLE IF NOT EXISTS needy_requests (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT NOT NULL,
+                category TEXT NOT NULL,
+                urgency TEXT DEFAULT 'normal',
+                status TEXT DEFAULT 'active',
+                contact_info TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id)
+            )
+        ''')
+
     conn.commit()
     conn.close()
 
