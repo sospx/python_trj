@@ -5,6 +5,7 @@ from utils import hash_password
 
 auth_bp = Blueprint('auth', __name__)
 
+
 def login_required(f):
     """Декоратор для проверки авторизации юзера."""
     @wraps(f)
@@ -14,6 +15,7 @@ def login_required(f):
             return redirect('/login')
         return f(*args, **kwargs)
     return decorated_function
+
 
 def user_type_required(user_type):
     """Декоратор для проверки типа юзера."""
