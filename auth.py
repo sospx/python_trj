@@ -72,3 +72,28 @@ def register():
     user_type = request.args.get('type', '')
     return render_template('auth/register.html', default_type=user_type)
 
+
+@auth_bp.route("/login", methods=['GET', 'POST'])
+def login():
+    """Обработка входа юзеров ."""
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        conn = get_db_connection()
+        user = conn.execute(
+            'SELECT * FROM users WHERE email = ?', (email,)
+        ).fetchone()
+        conn.close()
+
+        if user and user['password_hash'] == hash_password(password):
+            session['user_id'] = user['id']
+            session['user_email'] = user['email']
+            session['user_type'] = user['user_type']
+            session['full_name'] = user['full_name']
+
+            flash(f'Добро пожаловать, {user["full_name"] or user["email"]}!', 'success')
+            return redirect(f'/dashboard/{user["user_type"]}')
+        else:
+            flash('Неверный email или пароль', 'error')
+    return render_template('auth/login.html')
+
