@@ -41,3 +41,21 @@ def my_offers():
     ).fetchall()
     conn.close()
     return render_template('donor/my_offers.html', offers=offers)
+
+
+@donor_bp.route("/needy-requests")
+@user_type_required('donor')
+def needy_requests():
+    """Просмотр запросов нуждающихся."""
+    conn = get_db_connection()
+    requests = conn.execute('''
+        SELECT nr.*, u.full_name, u.phone, u.email 
+        FROM needy_requests nr 
+        JOIN users u ON nr.user_id = u.id 
+        WHERE nr.status = "active" 
+        ORDER BY nr.created_at DESC
+    ''').fetchall()
+    conn.close()
+
+    return render_template('donor/needy_requests.html', requests=requests)
+
