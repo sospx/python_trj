@@ -1,10 +1,146 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header gradient-bg text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-inbox me-2"></i>Отклики на мои предложения</h4>
+                <a href="/donor/create-offer" class="btn btn-light">
+                    <i class="fas fa-plus me-2"></i>Создать предложение
+                </a>
+            </div>
+            <div class="card-body">
+                
+                {% if responses %}
+                <div class="row">
+                    {% for response in responses %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 border-info">
+                            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Отклик от {{ response.needy_name }}</h6>
+                                <span class="badge bg-light text-info">
+                                    {% if response.status == 'new' %}
+                                        Новый
+                                    {% elif response.status == 'viewed' %}
+                                        Просмотрен
+                                    {% elif response.status == 'contacted' %}
+                                        Связь установлена
+                                    {% else %}
+                                        {{ response.status }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text"><strong>Сообщение:</strong> {{ response.message }}</p>
+                                
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-user me-2"></i>Имя нуждающегося:</strong> {{ response.needy_name }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-phone me-2"></i>Контакты для связи:</strong> 
+                                    <span class="text-primary">{{ response.needy_contact }}</span>
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-gift me-2"></i>На предложение:</strong> {{ response.offer_title }}
+                                </div>
+                                
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i>Получено: {{ response.created_at[:16] }}
+                                </small>
+                            </div>
+                            <div class="card-footer">
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-success contact-btn" 
+                                            data-contact="{{ response.needy_contact }}"
+                                            data-name="{{ response.needy_name }}">
+                                        <i class="fas fa-phone me-1"></i>Связаться
+                                    </button>
+                                    <button class="btn btn-outline-primary mark-contacted-btn"
+                                            data-response-id="{{ response.id }}">
+                                        <i class="fas fa-check me-1"></i>Отметить связь
+                                    </button>
+                                    <button class="btn btn-outline-danger delete-response-btn"
+                                            data-response-id="{{ response.id }}">
+                                        <i class="fas fa-trash me-1"></i>Удалить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <div class="feature-icon text-muted mb-3">
+                        <i class="fas fa-inbox"></i>
+                    </div>
+                    <h5>Пока нет откликов</h5>
+                    <p class="text-muted">Как только нуждающиеся начнут откликаться на ваши предложения, отклики появятся здесь</p>
+                    <a href="/donor/create-offer" class="btn btn-primary mt-3">
+                        <i class="fas fa-plus me-2"></i>Создать предложение помощи
+                    </a>
+                </div>
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Кнопка "Связаться" - показывает контакты
+    document.querySelectorAll('.contact-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const contact = this.getAttribute('data-contact');
+            const name = this.getAttribute('data-name');
+            alert(`📞 Контакты ${name}: ${contact}\n\nСвяжитесь с нуждающимся для организации помощи.`);
+        });
+    });
+    
+    // Кнопка "Отметить связь"
+    document.querySelectorAll('.mark-contacted-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const responseId = this.getAttribute('data-response-id');
+            fetch(`/donor/mark-response-contacted/${responseId}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('✅ Статус обновлен!');
+                    location.reload();
+                } else {
+                    alert('❌ Ошибка при обновлении статуса');
+                }
+            });
+        });
+    });
+    
+    // Кнопка "Удалить"
+    document.querySelectorAll('.delete-response-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const responseId = this.getAttribute('data-response-id');
+            if (confirm('Вы уверены, что хотите удалить этот отклик?')) {
+                fetch(`/donor/delete-response/${responseId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('✅ Отклик удален!');
+                        location.reload();
+                    } else {
+                        alert('❌ Ошибка при удалении отклика');
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+
