@@ -1,10 +1,264 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header gradient-bg text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-inbox me-2"></i>Отклики на мои запросы</h4>
+                <div>
+                    <a href="/needy/create-request" class="btn btn-light me-2">
+                        <i class="fas fa-plus me-2"></i>Создать запрос
+                    </a>
+                    <a href="/needy/available-help" class="btn btn-outline-light">
+                        <i class="fas fa-search me-2"></i>Найти помощь
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+
+                {% if responses %}
+                <div class="row">
+                    {% for response in responses %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 {% if response.responder_type == 'donor' %}border-success{% else %}border-warning{% endif %} shadow-sm">
+                            <div class="card-header {% if response.responder_type == 'donor' %}bg-success text-white{% else %}bg-warning text-dark{% endif %} d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">
+                                    {% if response.responder_type == 'donor' %}
+                                        <i class="fas fa-hand-holding-heart me-1"></i>
+                                    {% else %}
+                                        <i class="fas fa-hands me-1"></i>
+                                    {% endif %}
+                                    От {{ response.responder_name }}
+                                </h6>
+                                <div>
+                                    <span class="badge {% if response.responder_type == 'donor' %}bg-light text-success{% else %}bg-dark text-warning{% endif %} me-2">
+                                        {% if response.responder_type == 'donor' %}
+                                            Благотворитель
+                                        {% else %}
+                                            Фонд
+                                        {% endif %}
+                                    </span>
+                                    {% if response.status == 'new' %}
+                                        <span class="badge bg-info">Новый</span>
+                                    {% elif response.status == 'contacted' %}
+                                        <span class="badge bg-success">Связь установлена</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <strong>Сообщение:</strong>
+                                    <div class="border p-3 bg-light rounded mt-2">
+                                        {{ response.message }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-2">
+                                            <strong><i class="fas fa-user me-2"></i>От:</strong>
+                                            <span class="text-dark">{{ response.responder_name }}</span>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <strong><i class="fas fa-tag me-2"></i>Тип помощи:</strong>
+                                            <span class="badge bg-primary">
+                                                {% if response.help_type == 'food' %}🍎 Продукты
+                                                {% elif response.help_type == 'medicine' %}💊 Лекарства
+                                                {% elif response.help_type == 'clothes' %}👕 Одежда
+                                                {% elif response.help_type == 'money' %}💰 Финансы
+                                                {% elif response.help_type == 'housing' %}🏠 Жилье
+                                                {% elif response.help_type == 'education' %}🎓 Образование
+                                                {% else %}❓ Другое{% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        {% if response.amount %}
+                                        <div class="mb-2">
+                                            <strong><i class="fas fa-money-bill-wave me-2"></i>Сумма:</strong>
+                                            <span class="text-success fw-bold">{{ response.amount }} ₽</span>
+                                        </div>
+                                        {% endif %}
+
+                                        <div class="mb-2">
+                                            <strong><i class="fas fa-hands-helping me-2"></i>На запрос:</strong>
+                                            <span class="text-muted">{{ response.request_title }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="alert alert-success">
+                                    <strong><i class="fas fa-phone me-2"></i>Контакты для связи:</strong>
+                                    <div class="mt-1">
+                                        <span class="fw-bold text-primary fs-5">{{ response.responder_contact }}</span>
+                                    </div>
+                                    <small class="text-muted">Свяжитесь с {% if response.responder_type == 'donor' %}благотворителем{% else %}фондом{% endif %} для получения помощи</small>
+                                </div>
+
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i>Получено: {{ response.created_at[:16] }}
+                                </small>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <div class="btn-group w-100">
+                                    <button class="btn btn-success contact-btn flex-fill"
+                                            data-contact="{{ response.responder_contact }}"
+                                            data-name="{{ response.responder_name }}"
+                                            data-type="{{ response.responder_type }}">
+                                        <i class="fas fa-phone me-1"></i>Связаться
+                                    </button>
+                                    {% if response.status == 'new' %}
+                                    <button class="btn btn-outline-primary mark-contacted-btn flex-fill"
+                                            data-response-id="{{ response.id }}">
+                                        <i class="fas fa-check me-1"></i>Связь установлена
+                                    </button>
+                                    {% endif %}
+                                    <button class="btn btn-outline-danger delete-response-btn flex-fill"
+                                            data-response-id="{{ response.id }}">
+                                        <i class="fas fa-trash me-1"></i>Удалить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <div class="feature-icon text-muted mb-3">
+                        <i class="fas fa-inbox fa-3x"></i>
+                    </div>
+                    <h4 class="text-muted">Пока нет откликов</h4>
+                    <p class="text-muted mb-4">Как только благотворители или фонды начнут откликаться на ваши запросы, отклики появятся здесь</p>
+                    <div class="d-grid gap-2 d-md-block">
+                        <a href="/needy/create-request" class="btn btn-primary btn-lg me-2">
+                            <i class="fas fa-plus me-2"></i>Создать запрос помощи
+                        </a>
+                        <a href="/needy/available-help" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-search me-2"></i>Найти помощь
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Кнопка "Связаться" - показывает контакты
+    document.querySelectorAll('.contact-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const contact = this.getAttribute('data-contact');
+            const name = this.getAttribute('data-name');
+            const type = this.getAttribute('data-type');
+            const typeText = type === 'donor' ? 'благотворителя' : 'фонда';
+
+            alert(`📞 Контакты ${typeText} "${name}":\n\n${contact}\n\nСвяжитесь для получения помощи.`);
+        });
+    });
+
+    // Кнопка "Связь установлена"
+    document.querySelectorAll('.mark-contacted-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const responseId = this.getAttribute('data-response-id');
+
+            if (confirm('Отметить, что связь с откликнувшимся установлена?')) {
+                // Показываем индикатор загрузки
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Обновление...';
+                this.disabled = true;
+
+                fetch(`/needy/mark-response-contacted/${responseId}`, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('✅ Статус обновлен! Связь отмечена как установленная.');
+                        location.reload();
+                    } else {
+                        alert('❌ Ошибка при обновлении статуса');
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('❌ Ошибка при обновлении статуса');
+                    this.innerHTML = originalText;
+                    this.disabled = false;
+                });
+            }
+        });
+    });
+
+    // Кнопка "Удалить"
+    document.querySelectorAll('.delete-response-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const responseId = this.getAttribute('data-response-id');
+
+            if (confirm('Вы уверены, что хотите удалить этот отклик? Это действие нельзя отменить.')) {
+                // Показываем индикатор загрузки
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Удаление...';
+                this.disabled = true;
+
+                fetch(`/needy/delete-response/${responseId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('✅ Отклик удален!');
+                        location.reload();
+                    } else {
+                        alert('❌ Ошибка при удалении отклика');
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('❌ Ошибка при удалении отклика');
+                    this.innerHTML = originalText;
+                    this.disabled = false;
+                });
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.contact-btn:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.badge {
+    font-size: 0.75em;
+}
+
+.alert-success {
+    border-left: 4px solid #28a745;
+}
+</style>
+{% endblock %}
+
