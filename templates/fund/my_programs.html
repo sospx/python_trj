@@ -1,10 +1,183 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header gradient-bg text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-project-diagram me-2"></i>Мои программы помощи</h4>
+                <a href="/fund/create-program" class="btn btn-light">
+                    <i class="fas fa-plus me-2"></i>Новая программа
+                </a>
+            </div>
+            <div class="card-body">
+                {% if programs %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Название программы</th>
+                                <th>Категория</th>
+                                <th>Сборы</th>
+                                <th>Прогресс</th>
+                                <th>Статус</th>
+                                <th>Дата создания</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for program in programs %}
+                            <tr>
+                                <td>
+                                    <strong>{{ program.title }}</strong>
+                                    <br>
+                                    <small class="text-muted">{{ program.description[:100] }}{% if program.description|length > 100 %}...{% endif %}</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">
+                                        {% if program.category == 'food' %}🍎 Питание
+                                        {% elif program.category == 'medicine' %}💊 Медицина
+                                        {% elif program.category == 'clothes' %}👕 Одежда
+                                        {% elif program.category == 'money' %}💰 Финансы
+                                        {% elif program.category == 'housing' %}🏠 Жилье
+                                        {% elif program.category == 'education' %}🎓 Образование
+                                        {% else %}❓ Другое{% endif %}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if program.target_amount %}
+                                        <strong>{{ program.current_amount }} ₽</strong>
+                                        <br>
+                                        <small>из {{ program.target_amount }} ₽</small>
+                                    {% else %}
+                                        <span class="text-muted">Не указано</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if program.target_amount and program.target_amount > 0 %}
+                                    <div class="progress" style="height: 8px; width: 100px;">
+                                        <div class="progress-bar bg-warning" 
+                                             style="width: {{ (program.current_amount / program.target_amount * 100) if program.target_amount > 0 else 0 }}%">
+                                        </div>
+                                    </div>
+                                    <small>{{ ((program.current_amount / program.target_amount * 100) if program.target_amount > 0 else 0)|round(1) }}%</small>
+                                    {% else %}
+                                    <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if program.status == 'active' %}
+
+                                        <span class="badge bg-success"><i class="fas fa-play me-1"></i>Активна</span>
+                                    {% elif program.status == 'completed' %}
+                                        <span class="badge bg-secondary"><i class="fas fa-check me-1"></i>Завершена</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">{{ program.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ program.created_at[:16] }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        {% if program.status == 'active' %}
+                                            <a href="/fund/close-program/{{ program.id }}" class="btn btn-outline-danger"
+                                               onclick="return confirm('Вы уверены, что хотите закрыть программу?')">
+                                                <i class="fas fa-stop me-1"></i>Закрыть
+                                            </a>
+                                        {% endif %}
+                                        <button class="btn btn-outline-primary" data-bs-toggle="modal" 
+                                                data-bs-target="#programModal{{ program.id }}">
+                                            <i class="fas fa-eye me-1"></i>Просмотр
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Modal для просмотра программы -->
+                            <div class="modal fade" id="programModal{{ program.id }}" tabindex="-1">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Программа: {{ program.title }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <strong>Описание:</strong>
+                                                <p class="mt-2">{{ program.description }}</p>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <strong>Категория:</strong>
+                                                    <p>
+                                                        {% if program.category == 'food' %}🍎 Питание
+                                                        {% elif program.category == 'medicine' %}💊 Медицина
+                                                        {% elif program.category == 'clothes' %}👕 Одежда
+                                                        {% elif program.category == 'money' %}💰 Финансы
+                                                        {% elif program.category == 'housing' %}🏠 Жилье
+                                                        {% elif program.category == 'education' %}🎓 Образование
+                                                        {% else %}❓ Другое{% endif %}
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <strong>Статус:</strong>
+                                                    <p>
+                                                        {% if program.status == 'active' %}
+
+                                                            <span class="badge bg-success">Активна</span>
+                                                        {% else %}
+                                                            <span class="badge bg-secondary">{{ program.status }}</span>
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            {% if program.target_amount %}
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <strong>Финансовый прогресс:</strong>
+                                                    <div class="progress mt-2" style="height: 20px;">
+                                                        <div class="progress-bar bg-warning" 
+                                                             style="width: {{ (program.current_amount / program.target_amount * 100) if program.target_amount > 0 else 0 }}%">
+                                                            {{ ((program.current_amount / program.target_amount * 100) if program.target_amount > 0 else 0)|round(1) }}%
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center mt-2">
+                                                        <strong>{{ program.current_amount }} ₽</strong> из 
+                                                        <strong>{{ program.target_amount }} ₽</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            {% if program.contact_info %}
+                                            <div class="mt-3">
+                                                <strong>Контакты:</strong>
+                                                <p>{{ program.contact_info }}</p>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <div class="feature-icon text-muted mb-3">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h5>У вас пока нет программ</h5>
+                    <p class="text-muted">Создайте первую программу помощи для привлечения благотворителей</p>
+                    <a href="/fund/create-program" class="btn btn-warning mt-3">
+                        <i class="fas fa-plus me-2"></i>Создать программу
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
