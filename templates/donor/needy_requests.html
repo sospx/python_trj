@@ -1,10 +1,273 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header gradient-bg text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-hands-helping me-2"></i>Запросы на помощь</h4>
+                <div>
+                    <a href="/donor/create-offer" class="btn btn-light me-2">
+                        <i class="fas fa-plus me-2"></i>Создать предложение
+                    </a>
+                    <a href="/donor/responses" class="btn btn-outline-light">
+                        <i class="fas fa-inbox me-2"></i>Мои отклики
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+
+                {% if requests %}
+                <div class="row">
+                    {% for request in requests %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 border-primary">
+                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">{{ request.title }}</h6>
+                                <span class="badge bg-light text-primary">
+                                    {% if request.urgency == 'urgent' %}
+                                        Срочно
+                                    {% elif request.urgency == 'critical' %}
+                                        Критично
+                                    {% else %}
+                                        Обычно
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ request.description }}</p>
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-tag me-2"></i>Категория:</strong>
+                                    {% if request.category == 'food' %}🍎 Продукты
+                                    {% elif request.category == 'medicine' %}💊 Лекарства
+                                    {% elif request.category == 'clothes' %}👕 Одежда
+                                    {% elif request.category == 'money' %}💰 Финансы
+                                    {% elif request.category == 'housing' %}🏠 Жилье
+                                    {% elif request.category == 'education' %}🎓 Образование
+                                    {% else %}❓ Другое{% endif %}
+                                </div>
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-user me-2"></i>От:</strong> {{ request.full_name }}
+                                </div>
+                                {% if request.contact_info %}
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-phone me-2"></i>Контакты автора:</strong> {{ request.contact_info }}
+                                </div>
+                                {% endif %}
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i>Опубликовано: {{ request.created_at[:16] }}
+                                </small>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-primary btn-sm help-btn"
+                                        data-request-id="{{ request.id }}"
+                                        data-request-title="{{ request.title }}"
+                                        data-request-author="{{ request.full_name }}"
+                                        data-request-author-id="{{ request.user_id }}"
+                                        data-request-contact="{{ request.contact_info }}"
+                                        data-responder-type="donor">
+                                    <i class="fas fa-hand-holding-heart me-1"></i>Предложить помощь
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <div class="feature-icon text-muted mb-3">
+                        <i class="fas fa-inbox"></i>
+                    </div>
+                    <h5>Пока нет активных запросов</h5>
+                    <p class="text-muted">Нуждающиеся скоро добавят новые запросы на помощь</p>
+                    <a href="/donor/create-offer" class="btn btn-success mt-3">
+                        <i class="fas fa-plus me-2"></i>Создать предложение помощи
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для предложения помощи -->
+<div class="modal fade" id="respondModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Предложение помощи нуждающемуся</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="helpForm">
+                <input type="hidden" name="responder_type" value="donor">
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Автор запроса получит ваши контактные данные для связи
+                    </div>
+
+                    <p><strong>Запрос:</strong> <span id="modalRequestTitle" class="text-primary"></span></p>
+                    <p><strong>Автор:</strong> <span id="modalRequestAuthor"></span></p>
+                    <p><strong>Контакты автора:</strong> <span id="modalRequestContact" class="text-success"></span></p>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ваше сообщение автору запроса *</label>
+                        <textarea class="form-control" name="message" rows="4" required
+                                  placeholder="Опишите, какую помощь вы готовы оказать, условия, сроки передачи помощи..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Тип помощи *</label>
+                        <select class="form-select" name="help_type" required>
+                            <option value="">Выберите тип помощи</option>
+                            <option value="food">🍎 Продукты питания</option>
+                            <option value="medicine">💊 Лекарства</option>
+                            <option value="clothes">👕 Одежда</option>
+                            <option value="money">💰 Финансовая помощь</option>
+                            <option value="housing">🏠 Жилье</option>
+                            <option value="education">🎓 Образование</option>
+                            <option value="other">❓ Другое</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Сумма помощи (если финансовая)</label>
+                        <input type="number" class="form-control" name="amount"
+                               placeholder="Укажите сумму в рублях" min="0" step="0.01">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ваши контактные данные для связи *</label>
+                        <input type="text" class="form-control" name="responder_contact" required
+                               placeholder="Телефон, email или другие способы связи с вами"
+                               value="{{ session.get('contact_info', '') }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ваше имя/название *</label>
+                        <input type="text" class="form-control" name="responder_name" required
+                               placeholder="Как к вам обращаться"
+                               value="{{ session.get('full_name', '') }}">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane me-1"></i>Отправить предложение
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = new bootstrap.Modal(document.getElementById('respondModal'));
+    let currentRequestId = null;
+    let currentAuthorId = null;
+
+    // Обработчик для всех кнопок "Предложить помощь"
+    document.querySelectorAll('.help-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            currentRequestId = this.getAttribute('data-request-id');
+            currentAuthorId = this.getAttribute('data-request-author-id');
+            const title = this.getAttribute('data-request-title');
+            const author = this.getAttribute('data-request-author');
+            const contact = this.getAttribute('data-request-contact');
+
+            document.getElementById('modalRequestTitle').textContent = title;
+            document.getElementById('modalRequestAuthor').textContent = author;
+            document.getElementById('modalRequestContact').textContent = contact || 'Не указаны';
+
+            modal.show();
+        });
+    });
+
+    // Обработчик отправки формы
+    document.getElementById('helpForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        if (!currentRequestId || !currentAuthorId) {
+            alert('Ошибка: Недостаточно данных для отправки отклика');
+            return;
+        }
+
+        const formData = new FormData(this);
+
+        // Добавляем дополнительные данные
+        formData.append('request_id', currentRequestId);
+        formData.append('author_id', currentAuthorId);
+
+        // Показываем индикатор загрузки
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Отправка...';
+        submitBtn.disabled = true;
+
+        fetch(`/donor/respond-to-request/${currentRequestId}`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ Ваше предложение помощи успешно отправлено! Автор запроса получит ваши контактные данные и свяжется с вами.');
+                modal.hide();
+                this.reset();
+                currentRequestId = null;
+                currentAuthorId = null;
+
+                // Обновляем страницу через 2 секунды
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            } else {
+                alert('❌ Ошибка: ' + data.message);
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ Произошла ошибка при отправке предложения. Пожалуйста, попробуйте еще раз.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+    });
+
+    // Обработчик закрытия модального окна
+    document.getElementById('respondModal').addEventListener('hidden.bs.modal', function () {
+        document.getElementById('helpForm').reset();
+        currentRequestId = null;
+        currentAuthorId = null;
+    });
+});
+</script>
+
+<style>
+.modal {
+    z-index: 1060;
+}
+
+.modal-backdrop {
+    z-index: 1050;
+}
+
+body.modal-open {
+    overflow: auto;
+    padding-right: 0 !important;
+}
+
+.help-btn {
+    transition: all 0.3s ease;
+}
+
+.help-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+</style>
+{% endblock %}
+
