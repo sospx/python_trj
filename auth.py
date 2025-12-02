@@ -97,3 +97,10 @@ def login():
             flash('Неверный email или пароль', 'error')
     return render_template('auth/login.html')
 
+
+@auth_bp.route("/logout")
+def logout():
+    """Обработка выхода пользователя."""
+    session.clear()
+    flash('Вы успешно вышли из системы', 'info')
+    return redirect('/')
