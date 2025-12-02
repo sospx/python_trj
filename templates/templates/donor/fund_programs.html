@@ -91,33 +91,33 @@
                     <p><strong>Программа:</strong> <span id="modalProgramTitle"></span></p>
                     <p><strong>Фонд:</strong> <span id="modalProgramAuthor"></span></p>
                     <p><strong>Контакты фонда:</strong> <span id="modalProgramContact"></span></p>
-
+                    
                     <div class="mb-3">
                         <label class="form-label">Ваше сообщение фонду</label>
                         <textarea class="form-control" name="message" rows="3"
                                   placeholder="Напишите сообщение для фонда (необязательно)..."></textarea>
                     </div>
-
+                    
                     <div class="mb-3">
                         <label class="form-label">Количество жертвуемых вещей</label>
-                        <input type="number" class="form-control" name="quantity"
+                        <input type="number" class="form-control" name="quantity" 
                                placeholder="Например: 5 пар обуви, 10 книг" min="1">
                     </div>
-
+                    
                     <div class="mb-3">
                         <label class="form-label">Ваши контактные данные *</label>
                         <input type="text" class="form-control" name="donor_contact" required
                                placeholder="Телефон, email для связи"
                                value="{{ session.get('contact_info', '') }}">
                     </div>
-
+                    
                     <div class="mb-3">
                         <label class="form-label">Ваше имя *</label>
                         <input type="text" class="form-control" name="donor_name" required
                                placeholder="Как к вам обращаться"
                                value="{{ session.get('full_name', '') }}">
                     </div>
-
+                    
                     <div class="alert alert-info">
                         <small>
                             <i class="fas fa-info-circle me-1"></i>
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
         const formData = new FormData(this);
-
+        
         // Добавляем дополнительные данные
         formData.append('program_id', currentProgramId);
         formData.append('author_id', currentAuthorId);
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.reset();
                 currentProgramId = null;
                 currentAuthorId = null;
-
+                
                 // Обновляем страницу через 2 секунды
                 setTimeout(() => {
                     location.reload();

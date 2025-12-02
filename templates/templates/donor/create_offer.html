@@ -5,7 +5,7 @@
     <div class="col-md-10">
         <div class="card">
             <div class="card-header gradient-bg text-white">
-                <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Создать запрос на помощь</h4>
+                <h4 class="mb-0"><i class="fas fa-gift me-2"></i>Создать предложение помощи</h4>
             </div>
             <div class="card-body p-4">
                 <form method="POST" enctype="multipart/form-data">
@@ -13,30 +13,31 @@
                         <div class="col-md-8">
                             <div class="mb-4">
                                 <label for="title" class="form-label fw-semibold">
-                                    <i class="fas fa-heading me-2"></i>Название запроса *
+                                    <i class="fas fa-heading me-2"></i>Название предложения *
                                 </label>
-                                <input type="text" class="form-control form-control-lg" id="title" name="title" required
-                                       placeholder="Например: Нужна помощь с продуктами питания">
+                                <input type="text" class="form-control form-control-lg" id="title" name="title" required 
+                                       placeholder="Например: Помощь продуктами, Поддержка">
                             </div>
-
+                            
                             <div class="mb-4">
                                 <label for="description" class="form-label fw-semibold">
-                                    <i class="fas fa-align-left me-2"></i>Описание ситуации *
+                                    <i class="fas fa-align-left me-2"></i>Описание помощи *
                                 </label>
                                 <textarea class="form-control" id="description" name="description" rows="6" required
-                                          placeholder="Подробно опишите вашу ситуацию, какую помощь вы надеетесь получить, и почему это важно для вас..."></textarea>
+                                          placeholder="Подробно опишите, какую помощь вы готовы оказать, условия, сроки..."></textarea>
                             </div>
                         </div>
-
+                        
                         <div class="col-md-4">
                             <div class="card bg-light">
                                 <div class="card-body">
-                                    <h6 class="text-primary"><i class="fas fa-lightbulb me-2"></i>Советы</h6>
+                                    <h6 class="text-success"><i class="fas fa-lightbulb me-2"></i>Советы</h6>
                                     <ul class="small text-muted">
                                         <li>Будьте конкретны в описании</li>
-                                        <li>Укажите сроки, если важно</li>
-                                        <li>Опишите вашу ситуацию честно</li>
+                                        <li>Укажите условия помощи</li>
+                                        <li>Опишите процесс получения</li>
                                         <li>Укажите контакты для связи</li>
+                                        <li>Будьте готовы к общению</li>
                                     </ul>
                                 </div>
                             </div>
@@ -63,36 +64,39 @@
                                 </select>
                             </div>
                         </div>
-
+                        
                         <div class="col-md-4">
                             <div class="mb-4">
-                                <label for="urgency" class="form-label fw-semibold">
-                                    <i class="fas fa-clock me-2"></i>Срочность
+                                <label for="help_type" class="form-label fw-semibold">
+                                    <i class="fas fa-hand-holding-heart me-2"></i>Тип помощи *
                                 </label>
-                                <select class="form-select" id="urgency" name="urgency">
-                                    <option value="normal">🟢 Обычная - в течение недели</option>
-                                    <option value="urgent">🟡 Срочная - в течение 2-3 дней</option>
-                                    <option value="critical">🔴 Критическая - требуется немедленно</option>
+                                <select class="form-select" id="help_type" name="help_type" required>
+                                    <option value="">Выберите тип</option>
+                                    <option value="one_time">🔄 Разовая помощь</option>
+                                    <option value="regular">📅 Регулярная помощь</option>
+                                    <option value="consultation">💬 Консультация</option>
+                                    <option value="volunteer">👥 Волонтерство</option>
+                                    <option value="other">❓ Другое</option>
                                 </select>
                             </div>
                         </div>
-
+                        
                         <div class="col-md-4">
                             <div class="mb-4">
                                 <label for="quantity" class="form-label fw-semibold">
                                     <i class="fas fa-hashtag me-2"></i>Количество единиц
                                 </label>
-                                <input type="number" class="form-control" id="quantity" name="quantity"
+                                <input type="number" class="form-control" id="quantity" name="quantity" 
                                        placeholder="Например: 5 пар, 10 книг" min="1">
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="mb-4">
                         <label for="photo" class="form-label fw-semibold">
                             <i class="fas fa-image me-2"></i>Фотография (необязательно)
                         </label>
-                        <input type="file" class="form-control" id="photo" name="photo"
+                        <input type="file" class="form-control" id="photo" name="photo" 
                                accept="image/*">
                         <div class="form-text">Максимальный размер: 5MB. Форматы: JPG, PNG, GIF, WEBP</div>
                     </div>
@@ -106,11 +110,11 @@
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-semibold">
-                            <i class="fas fa-paper-plane me-2"></i>Опубликовать запрос
+                        <button type="submit" class="btn btn-success btn-lg py-3 fw-semibold">
+                            <i class="fas fa-paper-plane me-2"></i>Опубликовать предложение
                         </button>
-                        <a href="/needy/my-requests" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Вернуться к моим запросам
+                        <a href="/donor/my-offers" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Вернуться к моим предложениям
                         </a>
                     </div>
                 </form>

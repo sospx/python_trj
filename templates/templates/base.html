@@ -25,14 +25,14 @@
             --bs-dark-rgb: 15, 16, 20;
             --bs-light: #171921;
             --bs-light-rgb: 23, 25, 33;
-
+            
             /* Переопределение hover состояний Bootstrap */
             --bs-primary-hover: #F6E6BF;
             --bs-success-hover: #F6E6BF;
             --bs-info-hover: #F6E6BF;
             --bs-warning-hover: #F6E6BF;
             --bs-danger-hover: #F6E6BF;
-
+            
             /* Цветовая схема - Тёплый песочный */
             --bg: #0F1014;
             --bg-primary: #0F1014;
@@ -66,8 +66,8 @@
         }
 
         * {
-            transition: background-color var(--transition-fast),
-                        color var(--transition-fast),
+            transition: background-color var(--transition-fast), 
+                        color var(--transition-fast), 
                         border-color var(--transition-fast);
         }
 
@@ -166,7 +166,7 @@
             color: #1A0F00 !important;
         }
 
-        .btn-primary:hover, .btn-success:hover, .btn-info:hover,
+        .btn-primary:hover, .btn-success:hover, .btn-info:hover, 
         .btn-warning:hover, .btn-danger:hover {
             background-color: var(--accent-hover) !important;
             border-color: rgba(255, 255, 255, 0.05) !important;
@@ -241,14 +241,14 @@
             box-shadow: 0 0 0 3px rgba(239, 216, 163, 0.1);
             outline: none;
         }
-
+        
         /* Стили для валидации */
         .form-control.is-invalid,
         .form-select.is-invalid {
             border-color: rgba(255, 255, 255, 0.3) !important;
             background: rgba(255, 255, 255, 0.05) !important;
         }
-
+        
         .validation-error {
             display: block;
             font-size: 0.875rem;
@@ -285,7 +285,7 @@
             padding: 1rem;
             transition: background-color var(--transition-fast);
         }
-
+        
         /* Переопределение всех текстовых классов в ячейках таблицы */
         .table td *,
         .table td.text-white,
@@ -300,7 +300,7 @@
         .table tbody tr {
             transition: all var(--transition-fast);
         }
-
+        
         /* Переопределение text-white в строках таблицы */
         .table tbody tr.text-white,
         .table tbody tr.text-white td,
@@ -311,7 +311,7 @@
         .table tbody tr:hover {
             background: var(--bg-hover);
         }
-
+        
         .table tbody tr:hover td {
             color: var(--text-primary) !important;
         }
@@ -375,7 +375,7 @@
             color: var(--accent-primary);
             transition: all var(--transition-base);
         }
-
+        
         /* Статистика на песочном фоне */
         .card.bg-primary .stat-number,
         .card.bg-success .stat-number,
@@ -384,7 +384,7 @@
         .card.bg-danger .stat-number {
             color: #1A0F00 !important;
         }
-
+        
         /* Весь текст на песочном фоне - темно-коричневый */
         .card.bg-primary,
         .card.bg-success,
@@ -398,7 +398,7 @@
         .card.bg-danger * {
             color: #1A0F00 !important;
         }
-
+        
         /* Переопределение text-white на песочном фоне */
         .card.bg-primary .text-white,
         .card.bg-success .text-white,
@@ -412,7 +412,7 @@
         .bg-danger .text-white {
             color: #1A0F00 !important;
         }
-
+        
         /* Переопределение text-primary, text-success и т.д. на песочном фоне */
         .card.bg-primary .text-primary,
         .card.bg-success .text-success,
@@ -426,7 +426,7 @@
         .bg-danger .text-danger {
             color: #1A0F00 !important;
         }
-
+        
         /* Все элементы с песочным фоном */
         .bg-primary,
         .bg-success,
@@ -440,7 +440,7 @@
         .bg-danger * {
             color: #1A0F00 !important;
         }
-
+        
         /* Заголовки на песочном фоне */
         .bg-primary h1,
         .bg-primary h2,
@@ -518,7 +518,7 @@
         .text-primary, .text-success, .text-info, .text-warning, .text-danger {
             color: var(--accent-primary) !important;
         }
-
+        
         /* Переопределение текстовых цветов на песочном фоне */
         .bg-primary .text-primary,
         .bg-success .text-success,
@@ -540,7 +540,7 @@
         .text-white {
             color: var(--turquoise) !important;
         }
-
+        
         /* Переопределение text-white на песочном фоне - должно быть темно-коричневым */
         .bg-primary .text-white,
         .bg-success .text-white,
@@ -558,7 +558,7 @@
         .text-dark {
             color: var(--text-primary) !important;
         }
-
+        
         /* Заголовки */
         h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
             color: var(--text-heading) !important;
@@ -582,14 +582,14 @@
             background-color: var(--accent-primary) !important;
             color: #1A0F00 !important;
         }
-
+        
         /* Карточки с Bootstrap цветами */
         .card.bg-primary, .card.bg-success, .card.bg-info,
         .card.bg-warning, .card.bg-danger {
             background-color: var(--accent-primary) !important;
             border-color: rgba(255, 255, 255, 0.1) !important;
         }
-
+        
         /* Таблицы с Bootstrap цветами */
         .table-primary, .table-success, .table-info,
         .table-warning, .table-danger {
@@ -668,8 +668,8 @@
             background-color: var(--accent-primary) !important;
         }
 
-        .progress-bar.bg-primary, .progress-bar.bg-success,
-        .progress-bar.bg-info, .progress-bar.bg-warning,
+        .progress-bar.bg-primary, .progress-bar.bg-success, 
+        .progress-bar.bg-info, .progress-bar.bg-warning, 
         .progress-bar.bg-danger {
             background-color: var(--accent-primary) !important;
         }
@@ -705,12 +705,12 @@
         a:hover {
             color: var(--accent-hover);
         }
-
-        a.text-primary, a.text-success, a.text-info,
+        
+        a.text-primary, a.text-success, a.text-info, 
         a.text-warning, a.text-danger {
             color: var(--accent-primary) !important;
         }
-
+        
         a.text-primary:hover, a.text-success:hover, a.text-info:hover,
         a.text-warning:hover, a.text-danger:hover {
             color: var(--accent-hover) !important;
@@ -797,7 +797,7 @@
             .card {
                 border-radius: 12px;
             }
-
+            
             .btn {
                 padding: 0.5rem 1rem;
                 font-size: 0.9rem;
@@ -871,7 +871,7 @@
     // Плавная анимация появления элементов
     document.addEventListener('DOMContentLoaded', function() {
         const elements = document.querySelectorAll('.card, .alert, .btn, .table');
-
+        
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
@@ -879,7 +879,7 @@
                         entry.target.style.opacity = '0';
                         entry.target.style.transform = 'translateY(20px)';
                         entry.target.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-
+                        
                         requestAnimationFrame(() => {
                             entry.target.style.opacity = '1';
                             entry.target.style.transform = 'translateY(0)';

@@ -4,7 +4,7 @@ __pycache__/
 *.so
 .Python
 env/
-venv/
+../../OneDrive/Рабочий стол/python_trj/venv/
 ENV/
 .venv/
 pip-wheel-metadata/
@@ -49,3 +49,4 @@ Thumbs.db
 .env
 .env.*
 .env.local
+static/uploads/

@@ -8,3 +8,6 @@ class Config:
     DEBUG = True
     HOST = '127.0.0.1'
     PORT = 8080
+    UPLOAD_FOLDER = 'static/uploads'
+    MAX_FILE_SIZE = 5 * 1024 * 1024
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
