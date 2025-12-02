@@ -59,3 +59,31 @@ def needy_requests():
 
     return render_template('donor/needy_requests.html', requests=requests)
 
+
+@donor_bp.route("/respond-to-request/<int:request_id>", methods=['POST'])
+@user_type_required('donor')
+def respond_to_request(request_id):
+    """Отклик на запрос нуждающегося."""
+    message = request.form.get('message', '')
+    responder_contact = request.form.get('responder_contact', '')
+    responder_name = request.form.get('responder_name', '')
+
+    if not message:
+        return jsonify({'success': False, 'message': 'Сообщение обязательно'})
+
+    conn = get_db_connection()
+    # ID нужд
+    needy = conn.execute('SELECT user_id FROM needy_requests WHERE id = ?', (request_id,)).fetchone()
+
+    if not needy:
+        conn.close()
+        return jsonify({'success': False, 'message': 'Заявка не найдена'})
+    # Создаем отклик с контактной инфой
+    conn.execute(
+        'INSERT INTO responses (from_user_id, to_user_id, offer_id, offer_type, message, from_user_contact, from_user_name) VALUES (?, ?, ?, "needy", ?, ?, ?)',
+        (session['user_id'], needy['user_id'], request_id, message, responder_contact, responder_name)
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True, 'message': 'Отклик отправлен!'})
