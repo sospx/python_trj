@@ -53,6 +53,11 @@ def register():
             'SELECT id FROM users WHERE email = ?', (email,)
         ).fetchone()
 
+        if existing_user:
+            flash('Пользователь с таким email уже зарегистрирован', 'error')
+            conn.close()
+            return render_template('auth/register.html')
+
         password_hash = hash_password(password)
         conn.execute(
             'INSERT INTO users (email, password_hash, full_name, user_type, phone, address, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
