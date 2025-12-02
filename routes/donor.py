@@ -85,5 +85,22 @@ def respond_to_request(request_id):
     )
     conn.commit()
     conn.close()
-
     return jsonify({'success': True, 'message': 'Отклик отправлен!'})
+
+
+@donor_bp.route("/fund-programs")
+@user_type_required('donor')
+def fund_programs():
+    """Просмотр программ фондов."""
+    conn = get_db_connection()
+    programs = conn.execute('''
+        SELECT fp.*, u.full_name, u.phone, u.email 
+        FROM fund_programs fp 
+        JOIN users u ON fp.user_id = u.id 
+        WHERE fp.status = "active" 
+        ORDER BY fp.created_at DESC
+    ''').fetchall()
+    conn.close()
+
+    return render_template('donor/fund_programs.html', programs=programs)
+
