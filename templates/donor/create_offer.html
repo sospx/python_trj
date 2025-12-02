@@ -1,10 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header gradient-bg text-white">
+                <h4 class="mb-0"><i class="fas fa-gift me-2"></i>Создать предложение помощи</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-4">
+                                <label for="title" class="form-label fw-semibold">
+                                    <i class="fas fa-heading me-2"></i>Название предложения *
+                                </label>
+                                <input type="text" class="form-control form-control-lg" id="title" name="title" required
+                                       placeholder="Например: Помощь продуктами, Финансовая поддержка">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="description" class="form-label fw-semibold">
+                                    <i class="fas fa-align-left me-2"></i>Описание помощи *
+                                </label>
+                                <textarea class="form-control" id="description" name="description" rows="6" required
+                                          placeholder="Подробно опишите, какую помощь вы готовы оказать, условия, сроки..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="text-success"><i class="fas fa-lightbulb me-2"></i>Советы</h6>
+                                    <ul class="small text-muted">
+                                        <li>Будьте конкретны в описании</li>
+                                        <li>Укажите условия помощи</li>
+                                        <li>Опишите процесс получения</li>
+                                        <li>Укажите контакты для связи</li>
+                                        <li>Будьте готовы к общению</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="category" class="form-label fw-semibold">
+                                    <i class="fas fa-tags me-2"></i>Категория помощи *
+                                </label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="">Выберите категорию</option>
+                                    <option value="food">🍎 Продукты питания</option>
+                                    <option value="medicine">💊 Лекарства и лечение</option>
+                                    <option value="clothes">👕 Одежда и обувь</option>
+                                    <option value="money">💰 Финансовая помощь</option>
+                                    <option value="housing">🏠 Жилье и коммуналка</option>
+                                    <option value="education">🎓 Образование</option>
+                                    <option value="transport">🚗 Транспорт</option>
+                                    <option value="other">❓ Другое</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="help_type" class="form-label fw-semibold">
+                                    <i class="fas fa-hand-holding-heart me-2"></i>Тип помощи *
+                                </label>
+                                <select class="form-select" id="help_type" name="help_type" required>
+                                    <option value="">Выберите тип</option>
+                                    <option value="one_time">🔄 Разовая помощь</option>
+                                    <option value="regular">📅 Регулярная помощь</option>
+                                    <option value="consultation">💬 Консультация</option>
+                                    <option value="volunteer">👥 Волонтерство</option>
+                                    <option value="other">❓ Другое</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="amount" class="form-label fw-semibold">
+                                    <i class="fas fa-money-bill-wave me-2"></i>Сумма помощи (если финансовая)
+                                </label>
+                                <input type="number" class="form-control" id="amount" name="amount"
+                                       placeholder="Укажите сумму в рублях" step="0.01" min="0">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="contact_info" class="form-label fw-semibold">
+                                    <i class="fas fa-address-book me-2"></i>Контакты для связи *
+                                </label>
+                                <input type="text" class="form-control" id="contact_info" name="contact_info" required
+                                       placeholder="Телефон, email или другие способы связи">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg py-3 fw-semibold">
+                            <i class="fas fa-paper-plane me-2"></i>Опубликовать предложение
+                        </button>
+                        <a href="/donor/my-offers" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Вернуться к моим предложениям
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
