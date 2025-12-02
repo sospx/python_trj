@@ -156,14 +156,14 @@
             <a class="nav-link" href="#">
                 <i class="fas fa-tachometer-alt me-1"></i>Личный кабинет
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">
                 <i class="fas fa-sign-out-alt me-1"></i>Выйти
             </a>
             {% else %}
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">
                 <i class="fas fa-sign-in-alt me-1"></i>Вход
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{{ url_for('auth.register') }}">
                 <i class="fas fa-user-plus me-1"></i>Регистрация
             </a>
             {% endif %}
