@@ -28,3 +28,16 @@ def create_offer():
         flash('Предложение помощи успешно создано!', 'success')
         return redirect('/donor/my-offers')
     return render_template('donor/create_offer.html')
+
+
+@donor_bp.route("/my-offers")
+@user_type_required('donor')
+def my_offers():
+    """Список предложений благотворителя."""
+    conn = get_db_connection()
+    offers = conn.execute(
+        'SELECT * FROM donor_offers WHERE user_id = ? ORDER BY created_at DESC',
+        (session['user_id'],)
+    ).fetchall()
+    conn.close()
+    return render_template('donor/my_offers.html', offers=offers)
