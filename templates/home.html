@@ -125,7 +125,7 @@
                         </div>
                         <h3 class="card-title text-primary mb-3">👤 Нуждающийся</h3>
                         <p class="card-text mb-4">Получите помощь от благотворителей и фондов. Создавайте запросы на помощь и находите поддержку.</p>
-                        <a href="#" class="btn btn-primary btn-hero">
+                        <a href="{{ url_for('auth.register', type='needy') }}" class="btn btn-primary btn-hero">
                             <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
                         </a>
                     </div>
@@ -141,7 +141,7 @@
                         </div>
                         <h3 class="card-title text-success mb-3">💝 Благотворитель</h3>
                         <p class="card-text mb-4">Окажите помощь тем, кто в ней нуждается. Откликайтесь на запросы и создавайте предложения помощи.</p>
-                        <a href="#" class="btn btn-success btn-hero">
+                        <a href="{{ url_for('auth.register', type='donor') }}" class="btn btn-success btn-hero">
                             <i class="fas fa-heart me-2"></i>Помогать
                         </a>
                     </div>
@@ -157,7 +157,7 @@
                         </div>
                         <h3 class="card-title text-warning mb-3">🏛 Фонд</h3>
                         <p class="card-text mb-4">Создавайте программы помощи, организуйте сборы и эффективно распределяйте помощь нуждающимся.</p>
-                        <a href="#" class="btn btn-warning btn-hero">
+                        <a href="{{ url_for('auth.register', type='fund') }}" class="btn btn-warning btn-hero">
                             <i class="fas fa-building me-2"></i>Подключиться
                         </a>
                     </div>
