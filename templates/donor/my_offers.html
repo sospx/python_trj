@@ -1,10 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                <h4>📋 Мои предложения помощи</h4>
+                <a href="/donor/create-offer" class="btn btn-light">+ Новое предложение</a>
+            </div>
+            <div class="card-body">
+                {% if offers %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Название</th>
+                                <th>Тип помощи</th>
+                                <th>Сумма</th>
+                                <th>Статус</th>
+                                <th>Дата создания</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for offer in offers %}
+                            <tr>
+                                <td>{{ offer.title }}</td>
+                                <td>
+                                    {% if offer.help_type == 'food' %}🍎 Продукты
+                                    {% elif offer.help_type == 'medicine' %}💊 Лекарства
+                                    {% elif offer.help_type == 'clothes' %}👕 Одежда
+                                    {% elif offer.help_type == 'money' %}💰 Финансы
+                                    {% elif offer.help_type == 'housing' %}🏠 Жилье
+                                    {% elif offer.help_type == 'education' %}🎓 Образование
+                                    {% else %}❓ Другое{% endif %}
+                                </td>
+                                <td>
+                                    {% if offer.amount %}
+                                        {{ offer.amount }} ₽
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if offer.status == 'active' %}
+                                        <span class="badge bg-success">Активно</span>
+                                    {% elif offer.status == 'completed' %}
+                                        <span class="badge bg-secondary">Завершено</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">{{ offer.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ offer.created_at[:16] }}</td>
+                                <td>
+                                    {% if offer.status == 'active' %}
+                                        <button class="btn btn-sm btn-outline-secondary">Завершить</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <h5>У вас пока нет предложений помощи</h5>
+                    <p class="text-muted">Создайте первое предложение помощи</p>
+                    <a href="/donor/create-offer" class="btn btn-success">Создать предложение</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
