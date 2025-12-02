@@ -104,3 +104,98 @@ def fund_programs():
 
     return render_template('donor/fund_programs.html', programs=programs)
 
+
+@donor_bp.route("/donate-to-fund/<int:program_id>", methods=['POST'])
+@user_type_required('donor')
+def donate_to_fund(program_id):
+    """Пожертвование в фонд."""
+    try:
+        # прокрка наличия суммы
+        if 'amount' not in request.form or not request.form['amount']:
+            return jsonify({'success': False, 'message': 'Укажите сумму пожертвования'})
+        amount = float(request.form['amount'])
+        if amount <= 0:
+            return jsonify({'success': False, 'message': 'Сумма пожертвования должна быть больше нуля'})
+
+        message = request.form.get('message', '')
+        donor_contact = request.form.get('donor_contact', '')
+        donor_name = request.form.get('donor_name', '')
+
+        conn = get_db_connection()
+
+        try:
+            # Получаем информацию о программе
+            program = conn.execute('SELECT * FROM fund_programs WHERE id = ?', (program_id,)).fetchone()
+
+            if not program:
+                return jsonify({'success': False, 'message': 'Программа не найдена'})
+
+            # Создаем пожертвование со статусом (ожидает подтверждения)
+            conn.execute(
+                'INSERT INTO donations (donor_id, fund_id, program_id, amount, message, status, donor_contact, donor_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                (session['user_id'], program['user_id'], program_id, amount, message, 'pending', donor_contact,
+                 donor_name)
+            )
+
+            # НЕ начисляем сумму сразу она будет начислена после подтверждения фондгн
+            conn.commit()
+            return jsonify({'success': True,
+                            'message': f'Пожертвование {amount}₽ успешно отправлено! Фонд получит ваше пожертвование и подтвердит его.'})
+
+        finally:
+            conn.close()
+
+    except ValueError:
+        return jsonify({'success': False, 'message': 'Неверный формат суммы пожертвования'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Произошла ошибка: {str(e)}'})
+
+
+@donor_bp.route("/responses")
+@user_type_required('donor')
+def responses():
+    """Просмотр откликов на предложения благотворителя."""
+    conn = get_db_connection()
+    responses = conn.execute('''
+        SELECT r.*,
+               COALESCE(r.from_user_name, u.full_name) as needy_name,
+               COALESCE(r.from_user_contact, u.phone, u.email) as needy_contact,
+               do.title as offer_title
+        FROM responses r
+        JOIN users u ON r.from_user_id = u.id
+        LEFT JOIN donor_offers do ON r.offer_id = do.id AND r.offer_type = 'donor'
+        WHERE r.to_user_id = ? AND r.offer_type = 'donor'
+        ORDER BY r.created_at DESC
+    ''', (session['user_id'],)).fetchall()
+    conn.close()
+    return render_template('donor/responses.html', responses=responses)
+
+
+@donor_bp.route("/mark-response-contacted/<int:response_id>", methods=['POST'])
+@user_type_required('donor')
+def mark_response_contacted(response_id):
+    """Отметка отклика как "связались"."""
+    conn = get_db_connection()
+    conn.execute(
+        'UPDATE responses SET status = "contacted" WHERE id = ? AND to_user_id = ?',
+        (response_id, session['user_id'])
+    )
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
+
+
+@donor_bp.route("/delete-response/<int:response_id>", methods=['DELETE'])
+@user_type_required('donor')
+def delete_response(response_id):
+    """Удаление отклика."""
+    conn = get_db_connection()
+    conn.execute(
+        'DELETE FROM responses WHERE id = ? AND to_user_id = ?',
+        (response_id, session['user_id'])
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True})
+
