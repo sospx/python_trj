@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, session, flash
-from database import get_db_connection
-from auth import login_required
+from src.database import get_db_connection
+from routes.auth import login_required
 
 main_bp = Blueprint('main', __name__)
 
@@ -13,45 +13,35 @@ def index():
 @main_bp.route("/dashboard/<user_type>")
 @login_required
 def dashboard(user_type):
-    """Личный кабинет пользователя в зависимости от типа."""
     if session.get('user_type') != user_type:
         flash('Доступ запрещен', 'error')
         return redirect(f'/dashboard/{session.get("user_type")}')
 
     conn = get_db_connection()
-
     if user_type == 'needy':
-        # Статистика для нуждающихся
         stats = conn.execute('''
             SELECT 
                 COUNT(*) as total_requests,
                 COUNT(CASE WHEN status = 'active' THEN 1 END) as active_requests,
-                (SELECT COUNT(*) FROM responses WHERE from_user_id = ?) as total_responses
+                (SELECT COUNT(*) FROM responses WHERE to_user_id = ? AND offer_type = 'needy') as total_responses
             FROM needy_requests WHERE user_id = ?
         ''', (session['user_id'], session['user_id'])).fetchone()
-
     elif user_type == 'donor':
-        # Статистика для благотворителей
         stats = conn.execute('''
             SELECT 
                 COUNT(*) as total_offers,
                 COUNT(CASE WHEN status = 'active' THEN 1 END) as active_offers,
-                (SELECT COUNT(*) FROM responses WHERE from_user_id = ?) as total_responses,
-                (SELECT COALESCE(SUM(amount), 0) FROM donations WHERE donor_id = ?) as total_donated
+                (SELECT COUNT(*) FROM responses WHERE from_user_id = ?) as total_responses
             FROM donor_offers WHERE user_id = ?
-        ''', (session['user_id'], session['user_id'], session['user_id'])).fetchone()
-
+        ''', (session['user_id'], session['user_id'])).fetchone()
     elif user_type == 'fund':
-        # Статистика для фондов
         stats = conn.execute('''
             SELECT 
                 COUNT(*) as total_programs,
                 COUNT(CASE WHEN status = 'active' THEN 1 END) as active_programs,
-                (SELECT COUNT(*) FROM responses WHERE to_user_id = ?) as total_responses,
-                (SELECT COALESCE(SUM(current_amount), 0) FROM fund_programs WHERE user_id = ?) as total_collected,
-                (SELECT COALESCE(SUM(target_amount), 0) FROM fund_programs WHERE user_id = ?) as total_target
+                (SELECT COUNT(*) FROM responses WHERE to_user_id = ?) as total_responses
             FROM fund_programs WHERE user_id = ?
-        ''', (session['user_id'], session['user_id'], session['user_id'], session['user_id'])).fetchone()
+        ''', (session['user_id'], session['user_id'])).fetchone()
 
     conn.close()
 
@@ -64,5 +54,4 @@ def dashboard(user_type):
 @main_bp.route("/dashboard")
 @login_required
 def dashboard_redirect():
-    """Перенаправление на dashboard в зависимости от типа пользователя."""
     return redirect(f'/dashboard/{session.get("user_type")}')

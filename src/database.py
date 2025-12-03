@@ -4,8 +4,6 @@ import sqlite3
 def init_db():
     conn = sqlite3.connect('charity.db')
     cursor = conn.cursor()
-
-    # Таблица пользователей
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,8 +18,6 @@ def init_db():
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-
-    # Таблица объявлений благотворителей
     cursor.execute('''
             CREATE TABLE IF NOT EXISTS donor_offers (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,8 +33,6 @@ def init_db():
                 FOREIGN KEY (user_id) REFERENCES users (id)
             )
         ''')
-
-    # Таблица программ фондов
     cursor.execute('''
             CREATE TABLE IF NOT EXISTS fund_programs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,8 +48,6 @@ def init_db():
                 FOREIGN KEY (user_id) REFERENCES users (id)
             )
         ''')
-
-    # Таблица заявок нуждающихся
     cursor.execute('''
             CREATE TABLE IF NOT EXISTS needy_requests (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,15 +62,13 @@ def init_db():
                 FOREIGN KEY (user_id) REFERENCES users (id)
             )
         ''')
-
-    # Таблица откликов на объявления
     cursor.execute('''
             CREATE TABLE IF NOT EXISTS responses (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 from_user_id INTEGER NOT NULL,
                 to_user_id INTEGER NOT NULL,
                 offer_id INTEGER,
-                offer_type TEXT NOT NULL, -- 'donor', 'fund', 'needy'
+                offer_type TEXT NOT NULL,
                 message TEXT NOT NULL,
                 status TEXT DEFAULT 'new',
                 from_user_contact TEXT,
@@ -88,8 +78,6 @@ def init_db():
                 FOREIGN KEY (to_user_id) REFERENCES users (id)
             )
         ''')
-
-    # добавляем новые колонки, если их еще нет
     try:
         cursor.execute('ALTER TABLE responses ADD COLUMN from_user_contact TEXT')
     except:
@@ -98,22 +86,26 @@ def init_db():
         cursor.execute('ALTER TABLE responses ADD COLUMN from_user_name TEXT')
     except:
         pass
-
-    # Добавляем поле city в таблицы
     try:
-        cursor.execute('ALTER TABLE donor_offers ADD COLUMN city TEXT')
+        cursor.execute('ALTER TABLE responses ADD COLUMN quantity INTEGER')
     except:
         pass
     try:
-        cursor.execute('ALTER TABLE fund_programs ADD COLUMN city TEXT')
+        cursor.execute('ALTER TABLE needy_requests ADD COLUMN photo_path TEXT')
     except:
         pass
     try:
-        cursor.execute('ALTER TABLE needy_requests ADD COLUMN city TEXT')
+        cursor.execute('ALTER TABLE needy_requests ADD COLUMN quantity INTEGER')
     except:
         pass
-
-    # Таблица пожертвований в фонды
+    try:
+        cursor.execute('ALTER TABLE donor_offers ADD COLUMN photo_path TEXT')
+    except:
+        pass
+    try:
+        cursor.execute('ALTER TABLE donor_offers ADD COLUMN quantity INTEGER')
+    except:
+        pass
     cursor.execute('''
            CREATE TABLE IF NOT EXISTS donations (
                id INTEGER PRIMARY KEY AUTOINCREMENT,

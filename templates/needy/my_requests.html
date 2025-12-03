@@ -18,8 +18,8 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Название запроса</th>
-                                <th>Город</th>
                                 <th>Категория</th>
+                                <th>Количество</th>
                                 <th>Срочность</th>
                                 <th>Статус</th>
                                 <th>Откликов</th>
@@ -31,24 +31,32 @@
                             {% for request in requests %}
                             <tr>
                                 <td>
+                                    {% if request.photo_path %}
+                                    <img src="/{{ request.photo_path }}" alt="Фото" class="img-thumbnail me-2" style="max-width: 50px; max-height: 50px; object-fit: cover;">
+                                    {% endif %}
                                     <strong>{{ request.title }}</strong>
                                     <br>
                                     <small class="text-muted">{{ request.description[:100] }}{% if request.description|length > 100 %}...{% endif %}</small>
                                 </td>
                                 <td>
-                                    <i class="fas fa-map-marker-alt text-danger"></i>
-                                    {{ request.city or 'Не указан' }}
+                                    <span class="badge bg-light text-dark">
+                                        {% if request.category == 'food' %}Питание
+                                        {% elif request.category == 'clothes' %}Одежда
+                                        {% elif request.category == 'education' %}Образование
+                                        {% elif request.category == 'entertainment' %}Развлечения
+                                        {% elif request.category == 'books' %}Книги
+                                        {% elif request.category == 'household' %}Товары для дома
+                                        {% elif request.category == 'electronics' %}Техника
+                                        {% elif request.category == 'children' %}Детские вещи
+                                        {% else %}Другое{% endif %}
+                                    </span>
                                 </td>
                                 <td>
-                                    <span class="badge bg-light text-dark">
-                                        {% if request.category == 'food' %}🍎 Питание
-                                        {% elif request.category == 'medicine' %}💊 Медицина
-                                        {% elif request.category == 'clothes' %}👕 Одежда
-                                        {% elif request.category == 'money' %}💰 Финансы
-                                        {% elif request.category == 'housing' %}🏠 Жилье
-                                        {% elif request.category == 'education' %}🎓 Образование
-                                        {% else %}❓ Другое{% endif %}
-                                    </span>
+                                    {% if request.quantity %}
+                                        <span class="badge bg-info">{{ request.quantity }} шт.</span>
+                                    {% else %}
+                                        <span class="text-muted">—</span>
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {% if request.urgency == 'urgent' %}
@@ -68,7 +76,8 @@
                                         <span class="badge bg-warning">{{ request.status }}</span>
                                     {% endif %}
                                 </td>
-                                <td>                                    <span class="badge bg-info">{{ request.response_count or 0 }}</span>
+                                <td>
+                                    <span class="badge bg-info">{{ request.response_count or 0 }}</span>
                                 </td>
                                 <td>{{ request.created_at[:16] }}</td>
                                 <td>
@@ -107,3 +116,4 @@
     </div>
 </div>
 {% endblock %}
+

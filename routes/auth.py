@@ -1,13 +1,16 @@
 from flask import Blueprint, request, render_template, redirect, flash, session
 from functools import wraps
-from database import get_db_connection
-from utils import hash_password
+from src.database import get_db_connection
+from src.utils import hash_password
+from src.validators import (
+    validate_registration_data, validate_email, validate_password,
+    sanitize_html
+)
 
 auth_bp = Blueprint('auth', __name__)
 
 
 def login_required(f):
-    """Декоратор для проверки авторизации юзера."""
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
@@ -18,7 +21,6 @@ def login_required(f):
 
 
 def user_type_required(user_type):
-    """Декоратор для проверки типа юзера."""
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -34,19 +36,20 @@ def user_type_required(user_type):
 
 @auth_bp.route("/register", methods=['GET', 'POST'])
 def register():
-    """Обработка регистрации пользователей."""
     if request.method == 'POST':
-        email = request.form['email']
+        errors = validate_registration_data(request.form)
+        if errors:
+            for error in errors:
+                flash(error, 'error')
+            user_type = request.args.get('type', '')
+            return render_template('auth/register.html', default_type=user_type or request.form.get('user_type', ''))
+        email = request.form['email'].strip().lower()
         password = request.form['password']
-        full_name = request.form['full_name']
+        full_name = sanitize_html(request.form['full_name'].strip())
         user_type = request.form['user_type']
-        phone = request.form.get('phone', '')
-        address = request.form.get('address', '')
-        description = request.form.get('description', '')
-
-        if not email or not password or not user_type:
-            flash('Заполните все обязательные поля', 'error')
-            return render_template('auth/register.html')
+        phone = sanitize_html(request.form.get('phone', '').strip())
+        address = sanitize_html(request.form.get('address', '').strip())
+        description = sanitize_html(request.form.get('description', '').strip())
 
         conn = get_db_connection()
         existing_user = conn.execute(
@@ -56,7 +59,8 @@ def register():
         if existing_user:
             flash('Пользователь с таким email уже зарегистрирован', 'error')
             conn.close()
-            return render_template('auth/register.html')
+            user_type = request.args.get('type', '')
+            return render_template('auth/register.html', default_type=user_type or request.form.get('user_type', ''))
 
         password_hash = hash_password(password)
         conn.execute(
@@ -75,10 +79,20 @@ def register():
 
 @auth_bp.route("/login", methods=['GET', 'POST'])
 def login():
-    """Обработка входа юзеров ."""
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form.get('email', '').strip().lower()
+        password = request.form.get('password', '')
+        is_valid_email, email_error = validate_email(email)
+        is_valid_password, password_error = validate_password(password)
+        
+        if not is_valid_email:
+            flash(email_error, 'error')
+            return render_template('auth/login.html')
+        
+        if not is_valid_password:
+            flash(password_error, 'error')
+            return render_template('auth/login.html')
+        
         conn = get_db_connection()
         user = conn.execute(
             'SELECT * FROM users WHERE email = ?', (email,)
@@ -100,7 +114,6 @@ def login():
 
 @auth_bp.route("/logout")
 def logout():
-    """Обработка выхода пользователя."""
     session.clear()
     flash('Вы успешно вышли из системы', 'info')
     return redirect('/')
