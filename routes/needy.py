@@ -1,14 +1,13 @@
 from flask import Blueprint, request, render_template, redirect, flash, session, jsonify
-from database import get_db_connection
-from auth import user_type_required
-from config import Config
-from validators import (
+from src.database import get_db_connection
+from routes.auth import user_type_required
+from src.config import Config
+from src.validators import (
     validate_request_data, validate_response_data, validate_file,
     sanitize_html
 )
 import os
 import uuid
-from werkzeug.utils import secure_filename
 
 needy_bp = Blueprint('needy', __name__, url_prefix='/needy')
 

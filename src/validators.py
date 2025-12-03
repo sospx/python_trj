@@ -1,6 +1,6 @@
 import re
 from bleach import clean
-from config import Config
+from src.config import Config
 
 
 ALLOWED_CATEGORIES = [

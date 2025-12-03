@@ -1,8 +1,8 @@
 from flask import Blueprint, request, render_template, redirect, flash, session
 from functools import wraps
-from database import get_db_connection
-from utils import hash_password
-from validators import (
+from src.database import get_db_connection
+from src.utils import hash_password
+from src.validators import (
     validate_registration_data, validate_email, validate_password,
     sanitize_html
 )

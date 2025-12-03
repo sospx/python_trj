@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, session, flash
-from database import get_db_connection
-from auth import login_required
+from src.database import get_db_connection
+from routes.auth import login_required
 
 main_bp = Blueprint('main', __name__)
 

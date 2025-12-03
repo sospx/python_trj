@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, flash, session, jsonify
-from database import get_db_connection
-from auth import user_type_required
-from validators import (
+from src.database import get_db_connection
+from routes.auth import user_type_required
+from src.validators import (
     validate_program_data, validate_response_data,
     sanitize_html
 )
