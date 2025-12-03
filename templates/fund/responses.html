@@ -34,16 +34,16 @@
                             <div class="card-body">
                                 <p class="card-text"><strong>Сообщение:</strong> {{ response.message }}</p>
                                 
-                                {% if response.amount %}
                                 <div class="mb-2">
-                                    <strong><i class="fas fa-money-bill-wave me-2"></i>Сумма пожертвования:</strong> 
-                                    <span class="text-success">{{ response.amount }} ₽</span>
+                                    <strong><i class="fas fa-user me-2"></i>Имя благотворителя:</strong> {{ response.needy_name }}
+                                </div>
+                                
+                                {% if response.quantity %}
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-hashtag me-2"></i>Количество вещей:</strong>
+                                    <span class="badge bg-info">{{ response.quantity }} шт.</span>
                                 </div>
                                 {% endif %}
-                                
-                                <div class="mb-2">
-                                    <strong><i class="fas fa-user me-2"></i>Имя нуждающегося:</strong> {{ response.needy_name }}
-                                </div>
                                 
                                 <div class="mb-2">
                                     <strong><i class="fas fa-phone me-2"></i>Контакты для связи:</strong> 
@@ -66,7 +66,6 @@
                                         <i class="fas fa-phone me-1"></i>Связаться
                                     </button>
                                     <button class="btn btn-outline-primary mark-contacted-btn"
-
                                             data-response-id="{{ response.id }}">
                                         <i class="fas fa-check me-1"></i>Отметить связь
                                     </button>
@@ -151,3 +150,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 {% endblock %}
+

@@ -15,9 +15,8 @@
                         <thead>
                             <tr>
                                 <th>Название</th>
-                                <th>Город</th>
                                 <th>Тип помощи</th>
-                                <th>Сумма</th>
+                                <th>Количество</th>
                                 <th>Статус</th>
                                 <th>Дата создания</th>
                                 <th>Действия</th>
@@ -25,26 +24,20 @@
                         </thead>
                         <tbody>
                             {% for offer in offers %}
-                            <tr>
+                            <tr class="text-white">
                                 <td>{{ offer.title }}</td>
                                 <td>
-                                    <i class="fas fa-map-marker-alt text-danger"></i>
-                                    {{ offer.city or 'Не указан' }}
+                                    {% if offer.help_type == 'one_time' %}Разовая
+                                    {% elif offer.help_type == 'regular' %}Регулярная
+                                    {% elif offer.help_type == 'consultation' %}Консультация
+                                    {% elif offer.help_type == 'volunteer' %}Волонтерство
+                                    {% else %}Другое{% endif %}
                                 </td>
                                 <td>
-                                    {% if offer.help_type == 'food' %}🍎 Продукты
-                                    {% elif offer.help_type == 'medicine' %}💊 Лекарства
-                                    {% elif offer.help_type == 'clothes' %}👕 Одежда
-                                    {% elif offer.help_type == 'money' %}💰 Финансы
-                                    {% elif offer.help_type == 'housing' %}🏠 Жилье
-                                    {% elif offer.help_type == 'education' %}🎓 Образование
-                                    {% else %}❓ Другое{% endif %}
-                                </td>
-                                <td>
-                                    {% if offer.amount %}
-                                        {{ offer.amount }} ₽
+                                    {% if offer.quantity %}
+                                        {{ offer.quantity }} шт.
                                     {% else %}
-                                        -
+                                        —
                                     {% endif %}
                                 </td>
                                 <td>
@@ -59,7 +52,10 @@
                                 <td>{{ offer.created_at[:16] }}</td>
                                 <td>
                                     {% if offer.status == 'active' %}
-                                        <button class="btn btn-sm btn-outline-secondary">Завершить</button>
+                                        <a href="/donor/close-offer/{{ offer.id }}" class="btn btn-sm btn-outline-secondary"
+                                           onclick="return confirm('Вы уверены, что хотите закрыть предложение?')">
+                                            Завершить
+                                        </a>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -79,3 +75,4 @@
     </div>
 </div>
 {% endblock %}
+

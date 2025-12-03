@@ -34,7 +34,7 @@
 
                 <div class="text-center mt-4">
                     <p class="mb-0">Нет аккаунта?
-                        <a href="#" class="text-decoration-none fw-semibold">
+                        <a href="{{ url_for('auth.register') }}" class="text-decoration-none fw-semibold">
                             <i class="fas fa-user-plus me-1"></i>Зарегистрируйтесь
                         </a>
                     </p>
@@ -44,14 +44,14 @@
                 <div class="mt-4 pt-4 border-top">
                     <h6 class="text-center text-muted mb-3">Быстрая регистрация</h6>
                     <div class="d-grid gap-2">
-                        <a href="#" class="btn btn-outline-primary btn-sm">
-                            👤 Я нуждаюсь в помощи
+                        <a href="{{ url_for('auth.register', type='needy') }}" class="btn btn-outline-primary btn-sm">
+                            Я нуждаюсь в помощи
                         </a>
-                        <a href="#" class="btn btn-outline-success btn-sm">
-                            💝 Я хочу помогать
+                        <a href="{{ url_for('auth.register', type='donor') }}" class="btn btn-outline-success btn-sm">
+                            Я хочу помогать
                         </a>
-                        <a href="#" class="btn btn-outline-warning btn-sm">
-                            🏛 Я представляю фонд
+                        <a href="{{ url_for('auth.register', type='fund') }}" class="btn btn-outline-warning btn-sm">
+                            Я представляю фонд
                         </a>
                     </div>
                 </div>
@@ -60,3 +60,4 @@
     </div>
 </div>
 {% endblock %}
+
