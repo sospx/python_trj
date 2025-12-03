@@ -66,6 +66,7 @@
                         </div>
                     </div>
 
+
                     <!-- Modal для детального просмотра пожертвования -->
                     <div class="modal fade" id="donationModal{{ donation.id }}" tabindex="-1">
                         <div class="modal-dialog">
@@ -111,14 +112,14 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                                     <div class="btn-group">
-                                        <button class="btn btn-success confirm-donation-btn"
+                                        <button class="btn btn-success confirm-donation-btn" 
                                                 data-donation-id="{{ donation.id }}"
                                                 data-amount="{{ donation.amount }}"
                                                 data-program-id="{{ donation.program_id }}"
                                                 data-donor-name="{{ donation.donor_name }}">
                                             <i class="fas fa-check me-1"></i>Подтвердить пожертвование
                                         </button>
-                                        <button class="btn btn-danger reject-donation-btn"
+                                        <button class="btn btn-danger reject-donation-btn" 
                                                 data-donation-id="{{ donation.id }}">
                                             <i class="fas fa-times me-1"></i>Отклонить
                                         </button>
@@ -128,6 +129,7 @@
                         </div>
                     </div>
                     {% endfor %}
+
                 </div>
                 {% else %}
                 <div class="text-center py-4">
@@ -155,11 +157,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const amount = this.getAttribute('data-amount');
             const programId = this.getAttribute('data-program-id');
             const donorName = this.getAttribute('data-donor-name');
-
+            
             if (!confirm(`Подтвердить пожертвование ${amount} ₽ от ${donorName}? Сумма будет начислена в программу.`)) {
                 return;
             }
-
+            
             fetch(`/fund/confirm-donation/${donationId}`, {
                 method: 'POST',
                 headers: {
@@ -181,16 +183,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-
+    
     // Обработчик отклонения пожертвования
     document.querySelectorAll('.reject-donation-btn').forEach(button => {
         button.addEventListener('click', function() {
             const donationId = this.getAttribute('data-donation-id');
-
+            
             if (!confirm('Отклонить это пожертвование?')) {
                 return;
             }
-
+            
             fetch(`/fund/reject-donation/${donationId}`, {
                 method: 'POST',
                 headers: {
@@ -215,4 +217,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 {% endblock %}
-

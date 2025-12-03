@@ -43,28 +43,21 @@
                                     </span>
                                 </div>
                                 <div class="card-body">
-                                    {% if offer.photo_path %}
-                                    <div class="mb-3">
-                                        <img src="/{{ offer.photo_path }}" alt="Фото" class="img-fluid rounded" style="max-height: 200px; width: 100%; object-fit: cover;">
-                                    </div>
-                                    {% endif %}
                                     <p class="card-text">{{ offer.description }}</p>
                                     <div class="mb-2">
                                         <strong><i class="fas fa-tag me-2"></i>Категория:</strong>
-                                        {% if offer.category == 'food' %}Продукты
-                                        {% elif offer.category == 'clothes' %}Одежда
-                                        {% elif offer.category == 'education' %}Образование
-                                        {% elif offer.category == 'entertainment' %}Развлечения
-                                        {% elif offer.category == 'books' %}Книги
-                                        {% elif offer.category == 'household' %}Товары для дома
-                                        {% elif offer.category == 'electronics' %}Техника
-                                        {% elif offer.category == 'children' %}Детские вещи
-                                        {% else %}Другое{% endif %}
+                                        {% if offer.category == 'food' %}🍎 Продукты
+                                        {% elif offer.category == 'medicine' %}💊 Лекарства
+                                        {% elif offer.category == 'clothes' %}👕 Одежда
+                                        {% elif offer.category == 'money' %}💰 Финансы
+                                        {% elif offer.category == 'housing' %}🏠 Жилье
+                                        {% elif offer.category == 'education' %}🎓 Образование
+                                        {% else %}❓ Другое{% endif %}
                                     </div>
-                                    {% if offer.quantity %}
+                                    {% if offer.amount %}
                                     <div class="mb-2">
-                                        <strong><i class="fas fa-hashtag me-2"></i>Количество:</strong>
-                                        <span class="badge bg-info">{{ offer.quantity }} шт.</span>
+                                        <strong><i class="fas fa-money-bill-wave me-2"></i>Сумма:</strong>
+                                        <span class="text-success fw-bold">{{ offer.amount }} ₽</span>
                                     </div>
                                     {% endif %}
                                     <div class="mb-2">
@@ -109,26 +102,39 @@
                         {% for program in fund_programs %}
                         <div class="col-md-6 mb-4">
                             <div class="card h-100 border-warning">
-                                <div class="card-header bg-warning text-dark">
+                                <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
                                     <h6 class="mb-0">{{ program.title }}</h6>
+                                    {% if program.target_amount %}
+                                    <span class="badge bg-dark">
+                                        Цель: {{ program.target_amount }} ₽
+                                    </span>
+                                    {% endif %}
                                 </div>
                                 <div class="card-body">
                                     <p class="card-text">{{ program.description }}</p>
                                     <div class="mb-2">
                                         <strong><i class="fas fa-tag me-2"></i>Категория:</strong>
-                                        {% if program.category == 'food' %}Питание
-                                        {% elif program.category == 'clothes' %}Одежда
-                                        {% elif program.category == 'education' %}Образование
-                                        {% elif program.category == 'entertainment' %}Развлечения
-                                        {% elif program.category == 'books' %}Книги
-                                        {% elif program.category == 'household' %}Товары для дома
-                                        {% elif program.category == 'electronics' %}Техника
-                                        {% elif program.category == 'children' %}Детские вещи
-                                        {% else %}Другое{% endif %}
+                                        {% if program.category == 'food' %}🍎 Питание
+                                        {% elif program.category == 'medicine' %}💊 Медицина
+                                        {% elif program.category == 'clothes' %}👕 Одежда
+                                        {% elif program.category == 'money' %}💰 Финансы
+                                        {% elif program.category == 'housing' %}🏠 Жилье
+                                        {% elif program.category == 'education' %}🎓 Образование
+                                        {% else %}❓ Другое{% endif %}
                                     </div>
                                     <div class="mb-2">
                                         <strong><i class="fas fa-building me-2"></i>Фонд:</strong> {{ program.full_name }}
                                     </div>
+                                    {% if program.target_amount %}
+                                    <div class="progress mb-2" style="height: 10px;">
+                                        <div class="progress-bar bg-warning"
+                                             style="width: {{ (program.current_amount / program.target_amount * 100) if program.target_amount > 0 else 0 }}%">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">
+                                        Собрано {{ program.current_amount }} ₽ из {{ program.target_amount }} ₽
+                                    </small>
+                                    {% endif %}
                                     {% if program.contact_info %}
                                     <div class="mt-2">
                                         <strong><i class="fas fa-phone me-2"></i>Контакты:</strong> {{ program.contact_info }}

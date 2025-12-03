@@ -34,38 +34,39 @@
                             <div class="card-body">
                                 <p class="card-text"><strong>Сообщение:</strong> {{ response.message }}</p>
                                 
+                                {% if response.amount %}
                                 <div class="mb-2">
-                                    <strong><i class="fas fa-user me-2"></i>Имя благотворителя:</strong> {{ response.needy_name }}
-                                </div>
-
-                                {% if response.quantity %}
-                                <div class="mb-2">
-                                    <strong><i class="fas fa-hashtag me-2"></i>Количество вещей:</strong>
-                                    <span class="badge bg-info">{{ response.quantity }} шт.</span>
+                                    <strong><i class="fas fa-money-bill-wave me-2"></i>Сумма пожертвования:</strong> 
+                                    <span class="text-success">{{ response.amount }} ₽</span>
                                 </div>
                                 {% endif %}
-
+                                
                                 <div class="mb-2">
-                                    <strong><i class="fas fa-phone me-2"></i>Контакты для связи:</strong>
+                                    <strong><i class="fas fa-user me-2"></i>Имя нуждающегося:</strong> {{ response.needy_name }}
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-phone me-2"></i>Контакты для связи:</strong> 
                                     <span class="text-primary">{{ response.needy_contact }}</span>
                                 </div>
-
+                                
                                 <div class="mb-2">
                                     <strong><i class="fas fa-project-diagram me-2"></i>На программу:</strong> {{ response.program_title }}
                                 </div>
-
+                                
                                 <small class="text-muted">
                                     <i class="fas fa-clock me-1"></i>Получено: {{ response.created_at[:16] }}
                                 </small>
                             </div>
                             <div class="card-footer">
                                 <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-outline-success contact-btn"
+                                    <button class="btn btn-outline-success contact-btn" 
                                             data-contact="{{ response.needy_contact }}"
                                             data-name="{{ response.needy_name }}">
                                         <i class="fas fa-phone me-1"></i>Связаться
                                     </button>
                                     <button class="btn btn-outline-primary mark-contacted-btn"
+
                                             data-response-id="{{ response.id }}">
                                         <i class="fas fa-check me-1"></i>Отметить связь
                                     </button>
@@ -91,7 +92,7 @@
                     </a>
                 </div>
                 {% endif %}
-
+                
             </div>
         </div>
     </div>
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(`📞 Контакты ${name}: ${contact}\n\nСвяжитесь с нуждающимся для организации помощи.`);
         });
     });
-
+    
     // Кнопка "Отметить связь"
     document.querySelectorAll('.mark-contacted-btn').forEach(button => {
         button.addEventListener('click', function() {
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-
+    
     // Кнопка "Удалить"
     document.querySelectorAll('.delete-response-btn').forEach(button => {
         button.addEventListener('click', function() {
@@ -150,4 +151,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 {% endblock %}
-

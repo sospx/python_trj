@@ -64,20 +64,25 @@
                                         <div class="mb-2">
                                             <strong><i class="fas fa-tag me-2"></i>Тип помощи:</strong>
                                             <span class="badge bg-primary">
-                                                {% if response.help_type == 'food' %}Продукты
-                                                {% elif response.help_type == 'clothes' %}Одежда
-                                                {% elif response.help_type == 'education' %}Образование
-                                                {% elif response.help_type == 'entertainment' %}Развлечения
-                                                {% elif response.help_type == 'books' %}Книги
-                                                {% elif response.help_type == 'household' %}Товары для дома
-                                                {% elif response.help_type == 'electronics' %}Техника
-                                                {% elif response.help_type == 'children' %}Детские вещи
-                                                {% else %}Другое{% endif %}
+                                                {% if response.help_type == 'food' %}🍎 Продукты
+                                                {% elif response.help_type == 'medicine' %}💊 Лекарства
+                                                {% elif response.help_type == 'clothes' %}👕 Одежда
+                                                {% elif response.help_type == 'money' %}💰 Финансы
+                                                {% elif response.help_type == 'housing' %}🏠 Жилье
+                                                {% elif response.help_type == 'education' %}🎓 Образование
+                                                {% else %}❓ Другое{% endif %}
                                             </span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
+                                        {% if response.amount %}
+                                        <div class="mb-2">
+                                            <strong><i class="fas fa-money-bill-wave me-2"></i>Сумма:</strong>
+                                            <span class="text-success fw-bold">{{ response.amount }} ₽</span>
+                                        </div>
+                                        {% endif %}
+
                                         <div class="mb-2">
                                             <strong><i class="fas fa-hands-helping me-2"></i>На запрос:</strong>
                                             <span class="text-muted">{{ response.request_title }}</span>

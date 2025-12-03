@@ -8,7 +8,7 @@
                 <h4 class="mb-0"><i class="fas fa-gift me-2"></i>Создать предложение помощи</h4>
             </div>
             <div class="card-body p-4">
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="mb-4">
@@ -16,7 +16,7 @@
                                     <i class="fas fa-heading me-2"></i>Название предложения *
                                 </label>
                                 <input type="text" class="form-control form-control-lg" id="title" name="title" required
-                                       placeholder="Например: Помощь продуктами, Поддержка">
+                                       placeholder="Например: Помощь продуктами, Финансовая поддержка">
                             </div>
 
                             <div class="mb-4">
@@ -45,27 +45,26 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="mb-4">
                                 <label for="category" class="form-label fw-semibold">
                                     <i class="fas fa-tags me-2"></i>Категория помощи *
                                 </label>
                                 <select class="form-select" id="category" name="category" required>
                                     <option value="">Выберите категорию</option>
-                                    <option value="food">Продукты питания</option>
-                                    <option value="clothes">Одежда и обувь</option>
-                                    <option value="education">Образование</option>
-                                    <option value="entertainment">Развлечения</option>
-                                    <option value="books">Книги</option>
-                                    <option value="household">Товары для дома</option>
-                                    <option value="electronics">Техника</option>
-                                    <option value="children">Детские вещи</option>
-                                    <option value="other">Другое</option>
+                                    <option value="food">🍎 Продукты питания</option>
+                                    <option value="medicine">💊 Лекарства и лечение</option>
+                                    <option value="clothes">👕 Одежда и обувь</option>
+                                    <option value="money">💰 Финансовая помощь</option>
+                                    <option value="housing">🏠 Жилье и коммуналка</option>
+                                    <option value="education">🎓 Образование</option>
+                                    <option value="transport">🚗 Транспорт</option>
+                                    <option value="other">❓ Другое</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="mb-4">
                                 <label for="help_type" class="form-label fw-semibold">
                                     <i class="fas fa-hand-holding-heart me-2"></i>Тип помощи *
@@ -80,33 +79,28 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="mb-4">
-                                <label for="quantity" class="form-label fw-semibold">
-                                    <i class="fas fa-hashtag me-2"></i>Количество единиц
+                                <label for="amount" class="form-label fw-semibold">
+                                    <i class="fas fa-money-bill-wave me-2"></i>Сумма помощи (если финансовая)
                                 </label>
-                                <input type="number" class="form-control" id="quantity" name="quantity"
-                                       placeholder="Например: 5 пар, 10 книг" min="1">
+                                <input type="number" class="form-control" id="amount" name="amount"
+                                       placeholder="Укажите сумму в рублях" step="0.01" min="0">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="mb-4">
-                        <label for="photo" class="form-label fw-semibold">
-                            <i class="fas fa-image me-2"></i>Фотография (необязательно)
-                        </label>
-                        <input type="file" class="form-control" id="photo" name="photo"
-                               accept="image/*">
-                        <div class="form-text">Максимальный размер: 5MB. Форматы: JPG, PNG, GIF, WEBP</div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="contact_info" class="form-label fw-semibold">
-                            <i class="fas fa-address-book me-2"></i>Контакты для связи *
-                        </label>
-                        <input type="text" class="form-control" id="contact_info" name="contact_info" required
-                               placeholder="Телефон, email или другие способы связи">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="contact_info" class="form-label fw-semibold">
+                                    <i class="fas fa-address-book me-2"></i>Контакты для связи *
+                                </label>
+                                <input type="text" class="form-control" id="contact_info" name="contact_info" required
+                                       placeholder="Телефон, email или другие способы связи">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-grid gap-2">

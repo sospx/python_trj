@@ -35,30 +35,17 @@
                                 </span>
                             </div>
                             <div class="card-body">
-                                {% if request.photo_path %}
-                                <div class="mb-3">
-                                    <img src="/{{ request.photo_path }}" alt="Фото" class="img-fluid rounded" style="max-height: 200px; width: 100%; object-fit: cover;">
-                                </div>
-                                {% endif %}
                                 <p class="card-text">{{ request.description }}</p>
                                 <div class="mb-2">
                                     <strong><i class="fas fa-tag me-2"></i>Категория:</strong>
-                                    {% if request.category == 'food' %}Продукты
-                                    {% elif request.category == 'clothes' %}Одежда
-                                    {% elif request.category == 'education' %}Образование
-                                    {% elif request.category == 'entertainment' %}Развлечения
-                                    {% elif request.category == 'books' %}Книги
-                                    {% elif request.category == 'household' %}Товары для дома
-                                    {% elif request.category == 'electronics' %}Техника
-                                    {% elif request.category == 'children' %}Детские вещи
-                                    {% else %}Другое{% endif %}
+                                    {% if request.category == 'food' %}🍎 Продукты
+                                    {% elif request.category == 'medicine' %}💊 Лекарства
+                                    {% elif request.category == 'clothes' %}👕 Одежда
+                                    {% elif request.category == 'money' %}💰 Финансы
+                                    {% elif request.category == 'housing' %}🏠 Жилье
+                                    {% elif request.category == 'education' %}🎓 Образование
+                                    {% else %}❓ Другое{% endif %}
                                 </div>
-                                {% if request.quantity %}
-                                <div class="mb-2">
-                                    <strong><i class="fas fa-hashtag me-2"></i>Количество:</strong>
-                                    <span class="badge bg-info">{{ request.quantity }} шт.</span>
-                                </div>
-                                {% endif %}
                                 <div class="mb-2">
                                     <strong><i class="fas fa-user me-2"></i>От:</strong> {{ request.full_name }}
                                 </div>
@@ -134,16 +121,20 @@
                         <label class="form-label">Тип помощи *</label>
                         <select class="form-select" name="help_type" required>
                             <option value="">Выберите тип помощи</option>
-                            <option value="food">Продукты питания</option>
-                            <option value="clothes">Одежда</option>
-                            <option value="education">Образование</option>
-                            <option value="entertainment">Развлечения</option>
-                            <option value="books">Книги</option>
-                            <option value="household">Товары для дома</option>
-                            <option value="electronics">Техника</option>
-                            <option value="children">Детские вещи</option>
-                            <option value="other">Другое</option>
+                            <option value="food">🍎 Продукты питания</option>
+                            <option value="medicine">💊 Лекарства</option>
+                            <option value="clothes">👕 Одежда</option>
+                            <option value="money">💰 Финансовая помощь</option>
+                            <option value="housing">🏠 Жилье</option>
+                            <option value="education">🎓 Образование</option>
+                            <option value="other">❓ Другое</option>
                         </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Сумма помощи (если финансовая)</label>
+                        <input type="number" class="form-control" name="amount"
+                               placeholder="Укажите сумму в рублях" min="0" step="0.01">
                     </div>
 
                     <div class="mb-3">

@@ -36,6 +36,7 @@
                                         <li>Четко определите цели программы</li>
                                         <li>Укажите целевую аудиторию</li>
                                         <li>Опишите механизм помощи</li>
+                                        <li>Установите реалистичные цели по сборам</li>
                                         <li>Предоставьте контакты для вопросов</li>
                                     </ul>
                                 </div>
@@ -43,23 +44,37 @@
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="category" class="form-label fw-semibold">
-                            <i class="fas fa-tags me-2"></i>Категория помощи *
-                        </label>
-                        <select class="form-select" id="category" name="category" required>
-                            <option value="">Выберите категорию</option>
-                            <option value="food">Питание и продукты</option>
-                            <option value="clothes">Одежда и предметы быта</option>
-                            <option value="education">Образование и развитие</option>
-                            <option value="entertainment">Развлечения</option>
-                            <option value="books">Книги</option>
-                            <option value="household">Товары для дома</option>
-                            <option value="electronics">Техника</option>
-                            <option value="children">Детские вещи</option>
-                            <option value="emergency">Экстренная помощь</option>
-                            <option value="other">Другое</option>
-                        </select>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="category" class="form-label fw-semibold">
+                                    <i class="fas fa-tags me-2"></i>Категория помощи *
+                                </label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="">Выберите категорию</option>
+                                    <option value="food">🍎 Питание и продукты</option>
+                                    <option value="medicine">💊 Медицина и лечение</option>
+                                    <option value="clothes">👕 Одежда и предметы быта</option>
+                                    <option value="money">💰 Финансовая поддержка</option>
+                                    <option value="housing">🏠 Жилье и коммунальные услуги</option>
+                                    <option value="education">🎓 Образование и развитие</option>
+                                    <option value="emergency">🚨 Экстренная помощь</option>
+                                    <option value="other">❓ Другое</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="target_amount" class="form-label fw-semibold">
+                                    <i class="fas fa-bullseye me-2"></i>Целевая сумма сбора
+                                </label>
+                                <input type="number" class="form-control" id="target_amount" name="target_amount" 
+                                       placeholder="Укажите сумму в рублях" step="0.01" min="0">
+                                <div class="form-text">Оставьте пустым, если программа не требует денежных сборов</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-4">
@@ -84,4 +99,3 @@
     </div>
 </div>
 {% endblock %}
-
