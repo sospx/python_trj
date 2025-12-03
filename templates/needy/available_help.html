@@ -63,6 +63,10 @@
                                     <div class="mb-2">
                                         <strong><i class="fas fa-user me-2"></i>От:</strong> {{ offer.full_name }}
                                     </div>
+                                    {% if offer.city %}
+                                    <div class="mb-2">
+                                        <strong><i class="fas fa-map-marker-alt text-danger me-2"></i>Город:</strong> {{ offer.city }}
+                                    </div>                                    {% endif %}
                                     <small class="text-muted">
                                         <i class="fas fa-clock me-1"></i>Опубликовано: {{ offer.created_at[:16] }}
                                     </small>
@@ -125,6 +129,10 @@
                                     <div class="mb-2">
                                         <strong><i class="fas fa-building me-2"></i>Фонд:</strong> {{ program.full_name }}
                                     </div>
+                                    {% if program.city %}
+                                    <div class="mb-2">
+                                        <strong><i class="fas fa-map-marker-alt text-danger me-2"></i>Город:</strong> {{ program.city }}                                    </div>
+                                    {% endif %}
                                     {% if program.target_amount %}
                                     <div class="progress mb-2" style="height: 10px;">
                                         <div class="progress-bar bg-warning"
@@ -190,9 +198,7 @@
                     </div>
 
                     <p><strong>Предложение:</strong> <span id="modalOfferTitle" class="text-primary"></span></p>
-                    <p><strong>Автор:</strong> <span id="modalOfferAuthor"></span></p>
-
-                    <div class="mb-3">
+                    <p><strong>Автор:</strong> <span id="modalOfferAuthor"></span></p>                    <div class="mb-3">
                         <label class="form-label">Ваше сообщение автору *</label>
                         <textarea class="form-control" name="message" rows="4" required
                                   placeholder="Опишите вашу ситуацию и как эта помощь может вам помочь..."></textarea>
@@ -268,9 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Отправка...';
         submitBtn.disabled = true;
 
-        const url = `/needy/respond-to-offer/${currentOfferId}/${currentType === 'offer' ? 'donor' : 'fund'}`;
-
-        fetch(url, {
+        const url = `/needy/respond-to-offer/${currentOfferId}/${currentType === 'offer' ? 'donor' : 'fund'}`;        fetch(url, {
             method: 'POST',
             body: formData
         })
@@ -333,4 +337,3 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 {% endblock %}
-

@@ -42,9 +42,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
+                    </div>                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-4">
                                 <label for="category" class="form-label fw-semibold">
@@ -79,9 +77,7 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
+                    </div>                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-4">
                                 <label for="amount" class="form-label fw-semibold">
@@ -94,13 +90,38 @@
 
                         <div class="col-md-6">
                             <div class="mb-4">
-                                <label for="contact_info" class="form-label fw-semibold">
-                                    <i class="fas fa-address-book me-2"></i>Контакты для связи *
+                                <label for="city" class="form-label fw-semibold">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Город *
                                 </label>
-                                <input type="text" class="form-control" id="contact_info" name="contact_info" required
-                                       placeholder="Телефон, email или другие способы связи">
+                                <select class="form-select" id="city" name="city" required>
+                                    <option value="">Выберите город</option>
+                                    <option value="Москва">Москва</option>
+                                    <option value="Санкт-Петербург">Санкт-Петербург</option>
+                                    <option value="Новосибирск">Новосибирск</option>
+                                    <option value="Екатеринбург">Екатеринбург</option>
+                                    <option value="Казань">Казань</option>
+                                    <option value="Нижний Новгород">Нижний Новгород</option>
+                                    <option value="Челябинск">Челябинск</option>
+                                    <option value="Самара">Самара</option>
+                                    <option value="Омск">Омск</option>
+                                    <option value="Ростов-на-Дону">Ростов-на-Дону</option>
+                                    <option value="Уфа">Уфа</option>
+                                    <option value="Красноярск">Красноярск</option>
+                                    <option value="Воронеж">Воронеж</option>
+                                    <option value="Пермь">Пермь</option>
+                                    <option value="Волгоград">Волгоград</option>
+                                    <option value="Другой">Другой</option>
+                                </select>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="contact_info" class="form-label fw-semibold">
+                            <i class="fas fa-address-book me-2"></i>Контакты для связи *
+                        </label>
+                        <input type="text" class="form-control" id="contact_info" name="contact_info" required
+                               placeholder="Телефон, email или другие способы связи">
                     </div>
 
                     <div class="d-grid gap-2">
@@ -117,4 +138,3 @@
     </div>
 </div>
 {% endblock %}
-

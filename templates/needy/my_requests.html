@@ -18,6 +18,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Название запроса</th>
+                                <th>Город</th>
                                 <th>Категория</th>
                                 <th>Срочность</th>
                                 <th>Статус</th>
@@ -33,6 +34,10 @@
                                     <strong>{{ request.title }}</strong>
                                     <br>
                                     <small class="text-muted">{{ request.description[:100] }}{% if request.description|length > 100 %}...{% endif %}</small>
+                                </td>
+                                <td>
+                                    <i class="fas fa-map-marker-alt text-danger"></i>
+                                    {{ request.city or 'Не указан' }}
                                 </td>
                                 <td>
                                     <span class="badge bg-light text-dark">
@@ -63,8 +68,7 @@
                                         <span class="badge bg-warning">{{ request.status }}</span>
                                     {% endif %}
                                 </td>
-                                <td>
-                                    <span class="badge bg-info">{{ request.response_count or 0 }}</span>
+                                <td>                                    <span class="badge bg-info">{{ request.response_count or 0 }}</span>
                                 </td>
                                 <td>{{ request.created_at[:16] }}</td>
                                 <td>
@@ -103,4 +107,3 @@
     </div>
 </div>
 {% endblock %}
-

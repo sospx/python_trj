@@ -49,6 +49,11 @@
                                 <div class="mb-2">
                                     <strong><i class="fas fa-user me-2"></i>От:</strong> {{ request.full_name }}
                                 </div>
+                                {% if request.city %}
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-map-marker-alt text-danger me-2"></i>Город:</strong> {{ request.city }}
+                                </div>
+                                {% endif %}
                                 {% if request.contact_info %}
                                 <div class="mb-2">
                                     <strong><i class="fas fa-phone me-2"></i>Контакты автора:</strong> {{ request.contact_info }}
@@ -61,12 +66,10 @@
                             <div class="card-footer">
                                 <button class="btn btn-warning btn-sm help-btn"
                                         data-request-id="{{ request.id }}"
-                                        data-request-title="{{ request.title }}"
-                                        data-request-author="{{ request.full_name }}"
+                                        data-request-title="{{ request.title }}"                                        data-request-author="{{ request.full_name }}"
                                         data-request-author-id="{{ request.user_id }}"
                                         data-request-contact="{{ request.contact_info }}"
                                         data-responder-type="fund">
-
                                     <i class="fas fa-hand-holding-heart me-1"></i>Предложить помощь
                                 </button>
                             </div>
@@ -141,14 +144,11 @@
             </form>
         </div>
     </div>
-</div>
-
-<script>
+</div><script>
 document.addEventListener('DOMContentLoaded', function() {
     const modal = new bootstrap.Modal(document.getElementById('respondModal'));
     let currentRequestId = null;
     let currentAuthorId = null;
-
 
     // Обработчик для всех кнопок "Предложить помощь"
     document.querySelectorAll('.help-btn').forEach(button => {

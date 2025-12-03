@@ -40,6 +40,11 @@
                                 <div class="mb-2">
                                     <strong><i class="fas fa-building me-2"></i>Фонд:</strong> {{ program.full_name }}
                                 </div>
+                                {% if program.city %}
+                                <div class="mb-2">
+                                    <strong><i class="fas fa-map-marker-alt text-danger me-2"></i>Город:</strong> {{ program.city }}
+                                </div>
+                                {% endif %}
                                 {% if program.target_amount %}
                                 <div class="progress mb-2" style="height: 10px;">
                                     <div class="progress-bar bg-warning"
@@ -59,8 +64,7 @@
                                     <i class="fas fa-clock me-1"></i>Создано: {{ program.created_at[:16] }}
                                 </small>
                             </div>
-                            <div class="card-footer">
-                                <button class="btn btn-warning btn-sm support-btn"
+                            <div class="card-footer">                                <button class="btn btn-warning btn-sm support-btn"
                                         data-program-id="{{ program.id }}"
                                         data-program-title="{{ program.title }}"
                                         data-program-author="{{ program.full_name }}"
@@ -104,40 +108,39 @@
                     <p><strong>Программа:</strong> <span id="modalProgramTitle"></span></p>
                     <p><strong>Фонд:</strong> <span id="modalProgramAuthor"></span></p>
                     <p><strong>Контакты фонда:</strong> <span id="modalProgramContact"></span></p>
-                    
+
                     <div class="mb-3">
                         <label class="form-label">Сумма пожертвования (руб.) *</label>
                         <input type="number" class="form-control" name="amount" required
                                placeholder="Укажите сумму пожертвования" min="1" step="0.01">
                     </div>
-                    
+
                     <div class="mb-3">
                         <label class="form-label">Ваше сообщение фонду</label>
                         <textarea class="form-control" name="message" rows="3"
                                   placeholder="Напишите сообщение для фонда (необязательно)..."></textarea>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label class="form-label">Ваши контактные данные *</label>
                         <input type="text" class="form-control" name="donor_contact" required
                                placeholder="Телефон, email для связи"
                                value="{{ session.get('contact_info', '') }}">
                     </div>
-                    
+
                     <div class="mb-3">
                         <label class="form-label">Ваше имя *</label>
                         <input type="text" class="form-control" name="donor_name" required
                                placeholder="Как к вам обращаться"
                                value="{{ session.get('full_name', '') }}">
                     </div>
-                    
+
                     <div class="alert alert-info">
                         <small>
                             <i class="fas fa-info-circle me-1"></i>
                             После отправки формы фонд получит ваши контактные данные для организации помощи
                         </small>
-                    </div>
-                </div>
+                    </div>                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
                     <button type="submit" class="btn btn-warning">Поддержать программу</button>
@@ -180,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const formData = new FormData(this);
-        
+
         // Добавляем дополнительные данные
         formData.append('program_id', currentProgramId);
         formData.append('author_id', currentAuthorId);
@@ -197,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.reset();
                 currentProgramId = null;
                 currentAuthorId = null;
-                
+
                 // Обновляем страницу через 2 секунды
                 setTimeout(() => {
                     location.reload();
@@ -254,4 +257,3 @@ body.modal-open {
 }
 </style>
 {% endblock %}
-

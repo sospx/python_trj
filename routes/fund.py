@@ -15,11 +15,12 @@ def create_program():
         category = request.form['category']
         target_amount = request.form.get('target_amount')
         contact_info = request.form['contact_info']
+        city = request.form.get('city', '')
 
         conn = get_db_connection()
         conn.execute(
-            'INSERT INTO fund_programs (user_id, title, description, category, target_amount, contact_info) VALUES (?, ?, ?, ?, ?, ?)',
-            (session['user_id'], title, description, category, target_amount, contact_info)
+            'INSERT INTO fund_programs (user_id, title, description, category, target_amount, contact_info, city) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            (session['user_id'], title, description, category, target_amount, contact_info, city)
         )
         conn.commit()
         conn.close()

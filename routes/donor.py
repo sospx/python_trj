@@ -16,17 +16,19 @@ def create_offer():
         help_type = request.form['help_type']
         amount = request.form.get('amount')
         contact_info = request.form['contact_info']
+        city = request.form.get('city', '')
 
         conn = get_db_connection()
         conn.execute(
-            'INSERT INTO donor_offers (user_id, title, description, category, help_type, amount, contact_info) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            (session['user_id'], title, description, category, help_type, amount, contact_info)
+            'INSERT INTO donor_offers (user_id, title, description, category, help_type, amount, contact_info, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            (session['user_id'], title, description, category, help_type, amount, contact_info, city)
         )
         conn.commit()
         conn.close()
 
         flash('Предложение помощи успешно создано!', 'success')
         return redirect('/donor/my-offers')
+
     return render_template('donor/create_offer.html')
 
 

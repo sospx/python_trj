@@ -15,10 +15,10 @@
                                 <label for="title" class="form-label fw-semibold">
                                     <i class="fas fa-heading me-2"></i>Название программы *
                                 </label>
-                                <input type="text" class="form-control form-control-lg" id="title" name="title" required 
+                                <input type="text" class="form-control form-control-lg" id="title" name="title" required
                                        placeholder="Например: Помощь многодетным семьям, Поддержка пожилых">
                             </div>
-                            
+
                             <div class="mb-4">
                                 <label for="description" class="form-label fw-semibold">
                                     <i class="fas fa-align-left me-2"></i>Описание программы *
@@ -27,7 +27,7 @@
                                           placeholder="Подробно опишите цели программы, целевую аудиторию, план реализации..."></textarea>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <div class="card bg-light">
                                 <div class="card-body">
@@ -42,10 +42,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-
-                    <div class="row">
+                    </div>                    <div class="row">
                         <div class="col-md-6">
                             <div class="mb-4">
                                 <label for="category" class="form-label fw-semibold">
@@ -64,25 +61,54 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-6">
                             <div class="mb-4">
                                 <label for="target_amount" class="form-label fw-semibold">
                                     <i class="fas fa-bullseye me-2"></i>Целевая сумма сбора
                                 </label>
-                                <input type="number" class="form-control" id="target_amount" name="target_amount" 
+                                <input type="number" class="form-control" id="target_amount" name="target_amount"
                                        placeholder="Укажите сумму в рублях" step="0.01" min="0">
                                 <div class="form-text">Оставьте пустым, если программа не требует денежных сборов</div>
                             </div>
                         </div>
-                    </div>
+                    </div>                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="city" class="form-label fw-semibold">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Город *
+                                </label>
+                                <select class="form-select" id="city" name="city" required>
+                                    <option value="">Выберите город</option>
+                                    <option value="Москва">Москва</option>
+                                    <option value="Санкт-Петербург">Санкт-Петербург</option>
+                                    <option value="Новосибирск">Новосибирск</option>
+                                    <option value="Екатеринбург">Екатеринбург</option>
+                                    <option value="Казань">Казань</option>
+                                    <option value="Нижний Новгород">Нижний Новгород</option>
+                                    <option value="Челябинск">Челябинск</option>
+                                    <option value="Самара">Самара</option>
+                                    <option value="Омск">Омск</option>
+                                    <option value="Ростов-на-Дону">Ростов-на-Дону</option>
+                                    <option value="Уфа">Уфа</option>
+                                    <option value="Красноярск">Красноярск</option>
+                                    <option value="Воронеж">Воронеж</option>
+                                    <option value="Пермь">Пермь</option>
+                                    <option value="Волгоград">Волгоград</option>
+                                    <option value="Другой">Другой</option>
+                                </select>
+                            </div>
+                        </div>
 
-                    <div class="mb-4">
-                        <label for="contact_info" class="form-label fw-semibold">
-                            <i class="fas fa-address-book me-2"></i>Контакты для связи *
-                        </label>
-                        <input type="text" class="form-control" id="contact_info" name="contact_info" required
-                               placeholder="Телефон, email, адрес офиса или другие способы связи">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label for="contact_info" class="form-label fw-semibold">
+                                    <i class="fas fa-address-book me-2"></i>Контакты для связи *
+                                </label>
+                                <input type="text" class="form-control" id="contact_info" name="contact_info" required
+                                       placeholder="Телефон, email, адрес офиса или другие способы связи">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-grid gap-2">

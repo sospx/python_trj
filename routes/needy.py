@@ -15,11 +15,12 @@ def create_request():
         category = request.form['category']
         urgency = request.form['urgency']
         contact_info = request.form['contact_info']
+        city = request.form.get('city', '')
 
         conn = get_db_connection()
         conn.execute(
-            'INSERT INTO needy_requests (user_id, title, description, category, urgency, contact_info) VALUES (?, ?, ?, ?, ?, ?)',
-            (session['user_id'], title, description, category, urgency, contact_info)
+            'INSERT INTO needy_requests (user_id, title, description, category, urgency, contact_info, city) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            (session['user_id'], title, description, category, urgency, contact_info, city)
         )
         conn.commit()
         conn.close()

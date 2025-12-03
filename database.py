@@ -99,6 +99,20 @@ def init_db():
     except:
         pass
 
+    # Добавляем поле city в таблицы
+    try:
+        cursor.execute('ALTER TABLE donor_offers ADD COLUMN city TEXT')
+    except:
+        pass
+    try:
+        cursor.execute('ALTER TABLE fund_programs ADD COLUMN city TEXT')
+    except:
+        pass
+    try:
+        cursor.execute('ALTER TABLE needy_requests ADD COLUMN city TEXT')
+    except:
+        pass
+
     # Таблица пожертвований в фонды
     cursor.execute('''
            CREATE TABLE IF NOT EXISTS donations (

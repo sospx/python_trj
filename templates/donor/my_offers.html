@@ -15,6 +15,7 @@
                         <thead>
                             <tr>
                                 <th>Название</th>
+                                <th>Город</th>
                                 <th>Тип помощи</th>
                                 <th>Сумма</th>
                                 <th>Статус</th>
@@ -26,6 +27,10 @@
                             {% for offer in offers %}
                             <tr>
                                 <td>{{ offer.title }}</td>
+                                <td>
+                                    <i class="fas fa-map-marker-alt text-danger"></i>
+                                    {{ offer.city or 'Не указан' }}
+                                </td>
                                 <td>
                                     {% if offer.help_type == 'food' %}🍎 Продукты
                                     {% elif offer.help_type == 'medicine' %}💊 Лекарства
@@ -74,4 +79,3 @@
     </div>
 </div>
 {% endblock %}
-
