@@ -73,7 +73,7 @@ def init_db():
                 status TEXT DEFAULT 'new',
                 from_user_contact TEXT,
                 from_user_name TEXT,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                created_a DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (from_user_id) REFERENCES users (id),
                 FOREIGN KEY (to_user_id) REFERENCES users (id)
             )

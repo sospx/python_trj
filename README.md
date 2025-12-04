@@ -6,7 +6,30 @@
 
 ---
 
-## Быстрый старт
+##  Быстрый старт
+
+### Запуск через Docker (рекомендуется)
+
+```bash
+# Клонирование репозитория
+git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>.git
+cd torjok
+
+# Запуск через Docker Compose
+docker-compose up --build
+
+# Или в фоновом режиме
+docker-compose up -d --build
+```
+
+После запуска приложение будет доступно по адресу: `http://localhost:8080/`
+
+Для остановки:
+```bash
+docker-compose down
+```
+
+### Запуск без Docker
 
 ```bash
 # Клонирование репозитория
@@ -56,7 +79,7 @@ pip install -r requirements.txt
 SECRET_KEY=ваш_секретный_ключ
 ```
 
-По умолчанию путь к базе и шаблонам задаётся в `config.py`:
+По умолчанию путь к базе и шаблонам задаётся в `src/config.py`:
 - `DATABASE = 'charity.db'`
 - `TEMPLATE_FOLDER = 'templates'`
 
@@ -88,6 +111,8 @@ python main.py
   - Управление пожертвованиями (pending / completed / rejected)
   - Работа с откликами от нуждающихся
 
+> Скриншоты и GIF можно добавить позже в секцию `docs/` или прямо сюда.
+
 ---
 
 ## Конфигурация
@@ -98,7 +123,7 @@ python main.py
 
 ### Файлы конфигурации
 
-- `config.py` — базовая конфигурация приложения:
+- `src/config.py` — базовая конфигурация приложения:
   - `SECRET_KEY`
   - `DATABASE`
   - `TEMPLATE_FOLDER`
@@ -157,7 +182,7 @@ pip install -r requirements.txt
 
 ### Запуск в режиме разработки
 ```bash
-python main.py  # DEBUG включён в config.py
+python main.py  # DEBUG включён в src/config.py
 ```
 
 ### Тестирование
@@ -169,7 +194,7 @@ python main.py  # DEBUG включён в config.py
 
 При необходимости можно добавить:
 
-- unit‑тесты для `utils.py` и `auth.py`
+- unit‑тесты для `src/utils.py` и `routes/auth.py`
 - интеграционные тесты маршрутов с использованием `FlaskClient`
 
 ---
@@ -184,35 +209,163 @@ python main.py  # DEBUG включён в config.py
 
 ---
 
-## Структура проекта (упрощённо)
+## Структура проекта
 
 ```text
-torjok/
-├── main.py              # Точка входа, фабрика Flask-приложения
-├── config.py            # Конфигурация
-├── database.py          # Инициализация и доступ к БД
-├── auth.py              # Авторизация и регистрация, декораторы
-├── utils.py             # Вспомогательные функции (хеширование паролей)
-├── requirements.txt     # Зависимости
-├── charity.db           # Файл базы данных (локально)
+T/
+├── main.py                  # Точка входа, фабрика Flask-приложения
+├── requirements.txt         # Зависимости Python
+├── Dockerfile              # Конфигурация Docker образа
+├── docker-compose.yml      # Конфигурация Docker Compose
+├── .dockerignore           # Исключения для Docker
+├── charity.db              # Файл базы данных SQLite (создаётся автоматически)
 │
-├── routes/
-│   ├── main.py          # Главная и dashboard
-│   ├── needy.py         # Маршруты для нуждающихся
-│   ├── donor.py         # Маршруты для благотворителей
-│   └── fund.py          # Маршруты для фондов
+├── src/                    # Исходный код приложения
+│   ├── config.py           # Конфигурация приложения
+│   ├── database.py         # Инициализация и доступ к БД
+│   ├── utils.py            # Вспомогательные функции (хеширование паролей)
+│   └── validators.py       # Валидаторы данных
 │
-├── templates/
-│   ├── base.html        # Базовый шаблон
-│   ├── home.html        # Главная страница
-│   ├── auth/            # login/register
-│   ├── main/            # dashboard_* по ролям
-│   ├── needy/           # страницы нуждающихся
-│   ├── donor/           # страницы доноров
-│   └── fund/            # страницы фондов
+├── routes/                 # Маршруты Flask (blueprints)
+│   ├── __init__.py
+│   ├── auth.py             # Авторизация и регистрация, декораторы
+│   ├── main.py             # Главная страница и dashboard
+│   ├── needy.py            # Маршруты для нуждающихся
+│   ├── donor.py            # Маршруты для благотворителей
+│   └── fund.py             # Маршруты для фондов
 │
-└── static/
-    └── img/             # Изображения (логотипы, иллюстрации)
+├── templates/              # HTML шаблоны (Jinja2)
+│   ├── base.html           # Базовый шаблон
+│   ├── home.html           # Главная страница
+│   ├── auth/               # Страницы авторизации
+│   │   ├── login.html
+│   │   └── register.html
+│   ├── main/               # Дашборды по ролям
+│   │   ├── dashboard_donor.html
+│   │   ├── dashboard_fund.html
+│   │   └── dashboard_needy.html
+│   ├── needy/              # Страницы для нуждающихся
+│   │   ├── create_request.html
+│   │   ├── my_requests.html
+│   │   ├── available_help.html
+│   │   └── responses.html
+│   ├── donor/              # Страницы для благотворителей
+│   │   ├── create_offer.html
+│   │   ├── my_offers.html
+│   │   ├── needy_requests.html
+│   │   ├── fund_programs.html
+│   │   └── responses.html
+│   └── fund/               # Страницы для фондов
+│       ├── create_program.html
+│       ├── my_programs.html
+│       ├── needy_requests.html
+│       ├── donations.html
+│       └── responses.html
+│
+└── static/                 # Статические файлы
+    ├── img/                # Изображения (логотипы, иллюстрации)
+    │   └── i.webp
+    ├── js/                 # JavaScript файлы
+    │   └── validation.js
+    └── uploads/            # Загруженные пользователями файлы
+```
+
+---
+
+## Docker
+
+Проект полностью настроен для работы в Docker контейнерах.
+
+### Требования
+
+- Docker (версия 20.10 или выше)
+- Docker Compose (версия 1.29 или выше)
+
+### Быстрый запуск
+
+1. **Клонируйте репозиторий:**
+   ```bash
+   git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>.git
+   cd torjok
+   ```
+
+2. **Запустите контейнер:**
+   ```bash
+   docker-compose up --build
+   ```
+
+3. **Откройте браузер:**
+   Приложение будет доступно по адресу: `http://localhost:8080/`
+
+### Управление контейнером
+
+```bash
+# Запуск в фоновом режиме
+docker-compose up -d
+
+# Просмотр логов
+docker-compose logs -f
+
+# Остановка контейнера
+docker-compose down
+
+# Пересборка образа
+docker-compose build --no-cache
+
+# Остановка и удаление контейнера с данными
+docker-compose down -v
+```
+
+### Переменные окружения
+
+Вы можете настроить приложение через переменные окружения в `docker-compose.yml`:
+
+```yaml
+environment:
+  - SECRET_KEY=ваш-секретный-ключ
+  - FLASK_ENV=production
+```
+
+Или создать файл `.env` в корне проекта:
+
+```env
+SECRET_KEY=ваш-секретный-ключ
+FLASK_ENV=production
+```
+
+И обновить `docker-compose.yml`:
+
+```yaml
+env_file:
+  - .env
+```
+
+### Структура Docker
+
+- **Dockerfile** — описывает образ приложения
+- **docker-compose.yml** — оркестрация контейнеров
+- **.dockerignore** — исключает ненужные файлы из образа
+
+### Важные замечания
+
+- База данных `charity.db` монтируется как volume, поэтому данные сохраняются между перезапусками
+- Директория `static/uploads` также монтируется для сохранения загруженных файлов
+- При первом запуске база данных будет создана автоматически
+
+### Запуск только через Dockerfile (без docker-compose)
+
+```bash
+# Сборка образа
+docker build -t charity-app .
+
+# Запуск контейнера
+docker run -d \
+  -p 8080:8080 \
+  -v $(pwd)/charity.db:/app/charity.db \
+  -v $(pwd)/static/uploads:/app/static/uploads \
+  -e SECRET_KEY=ваш-секретный-ключ \
+  --name charity-app \
+  charity-app
 ```
 
 ---

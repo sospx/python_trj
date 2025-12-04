@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: charity-app
+    ports:
+      - "8080:8080"
+    volumes:
+      # Монтируем базу данных для сохранения данных
+      - ./charity.db:/app/charity.db
+      # Монтируем директорию загрузок
+      - ./static/uploads:/app/static/uploads
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-here-change-this-in-production}
+      - FLASK_ENV=production
+    restart: unless-stopped
+
