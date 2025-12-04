@@ -12,8 +12,8 @@
 
 ```bash
 # Клонирование репозитория
-git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>.git
-cd torjok
+git clone https://github.com/sospx/python_trj.git
+cd python_trj
 
 # Запуск через Docker Compose
 docker-compose up --build
@@ -33,8 +33,8 @@ docker-compose down
 
 ```bash
 # Клонирование репозитория
-git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>.git
-cd torjok
+git clone https://github.com/sospx/python_trj.git
+cd python_trj
 
 # (рекомендуется) Создать и активировать виртуальное окружение
 python -m venv venv
@@ -56,8 +56,8 @@ python main.py
 
 ### 1. Клонирование проекта
 ```bash
-git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>.git
-cd torjok
+git clone https://github.com/sospx/python_trj.git
+cd python_trj
 ```
 
 ### 2. Виртуальное окружение (опционально, но желательно)
@@ -173,8 +173,8 @@ python main.py
 
 ### Установка окружения для разработки
 ```bash
-git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>.git
-cd torjok
+git clone https://github.com/sospx/python_trj.git
+cd python_trj
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
@@ -285,8 +285,8 @@ T/
 
 1. **Клонируйте репозиторий:**
    ```bash
-   git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>.git
-   cd torjok
+   git clone https://github.com/sospx/python_trj.git
+   cd python_trj
    ```
 
 2. **Запустите контейнер:**
